@@ -457,7 +457,7 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 2;
 }
 
-/* Semi-transparent overlay for text readability */
+/* Semi-transparent overlay - subtle tint over video */
 .hero-media-overlay {
     position: absolute;
     top: 0;
@@ -466,22 +466,26 @@ h1, h2, h3, h4, h5, h6 {
     bottom: 0;
     background: linear-gradient(
         135deg,
-        rgba(255, 255, 255, 0.65) 0%,
-        rgba(255, 255, 255, 0.55) 40%,
-        rgba(240, 253, 250, 0.50) 100%
+        rgba(255, 255, 255, 0.25) 0%,
+        rgba(255, 255, 255, 0.15) 40%,
+        rgba(240, 253, 250, 0.20) 100%
     );
     z-index: 3;
 }
 
-/* Tablet and mobile adjustments for video */
+/* Tablet and mobile adjustments for video overlay */
 @media (max-width: 968px) {
     .hero-media-overlay {
         background: linear-gradient(
             180deg,
-            rgba(255, 255, 255, 0.70) 0%,
-            rgba(255, 255, 255, 0.60) 50%,
-            rgba(240, 253, 250, 0.55) 100%
+            rgba(255, 255, 255, 0.30) 0%,
+            rgba(255, 255, 255, 0.20) 50%,
+            rgba(240, 253, 250, 0.25) 100%
         );
+    }
+
+    .hero-text {
+        padding: var(--spacing-8);
     }
 }
 
@@ -489,10 +493,15 @@ h1, h2, h3, h4, h5, h6 {
     .hero-media-overlay {
         background: linear-gradient(
             180deg,
-            rgba(255, 255, 255, 0.75) 0%,
-            rgba(255, 255, 255, 0.65) 50%,
-            rgba(240, 253, 250, 0.60) 100%
+            rgba(255, 255, 255, 0.35) 0%,
+            rgba(255, 255, 255, 0.25) 50%,
+            rgba(240, 253, 250, 0.30) 100%
         );
+    }
+
+    .hero-text {
+        padding: var(--spacing-6);
+        border-radius: var(--radius-xl);
     }
 }
 
@@ -535,6 +544,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .hero-text {
     max-width: 600px;
+    /* Glassmorphism card for readability over video */
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: var(--radius-2xl);
+    padding: var(--spacing-10);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .hero-title {
