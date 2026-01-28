@@ -487,4 +487,32 @@
     .progress-fill {
         transition: none;
     }
+
+    /* GSAP animated elements - ensure visibility */
+    .hero-title,
+    .hero-subtitle,
+    .hero-cta .btn,
+    .trust-badge,
+    .hero-stat-card,
+    .section-header,
+    .step-card,
+    .step-connector,
+    .treatment-card,
+    .testimonial-card,
+    .story-card,
+    .faq-item,
+    .blog-card,
+    .comparison-table-wrapper,
+    .treatments-info,
+    .glper-text,
+    .glper-mockup,
+    .glper-features li,
+    .app-buttons,
+    .meet-team-content,
+    .about-content,
+    .about-image,
+    .steps-cta {
+        opacity: 1 !important;
+        transform: none !important;
+    }
 }

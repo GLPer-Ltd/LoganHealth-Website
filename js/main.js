@@ -4,11 +4,10 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all modules
+    // Note: Scroll animations and counter animations are now handled by GSAP (gsap-animations.js)
     initNavigation();
-    initScrollAnimations();
     initSmoothScroll();
     initFAQ();
-    initCounterAnimation();
 });
 
 /* =============================================
@@ -54,33 +53,6 @@ function initNavigation() {
             navToggle.classList.remove('active');
             navMenu.classList.remove('active');
         }
-    });
-}
-
-/* =============================================
-   Scroll Animations
-   ============================================= */
-function initScrollAnimations() {
-    const animatedElements = document.querySelectorAll('.animate-fade-up');
-
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px 0px -50px 0px',
-        threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                // Optionally unobserve after animation
-                // observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    animatedElements.forEach(el => {
-        observer.observe(el);
     });
 }
 
@@ -137,60 +109,6 @@ function initFAQ() {
             item.classList.toggle('active');
             this.setAttribute('aria-expanded', !isActive);
         });
-    });
-}
-
-/* =============================================
-   Counter Animation
-   ============================================= */
-function initCounterAnimation() {
-    const counters = document.querySelectorAll('[data-count]');
-
-    if (counters.length === 0) return;
-
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.5
-    };
-
-    const animateCounter = (element) => {
-        const target = parseInt(element.dataset.count);
-        const duration = 2000; // 2 seconds
-        const start = 0;
-        const startTime = performance.now();
-
-        const updateCounter = (currentTime) => {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-
-            // Easing function for smooth animation
-            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-            const current = Math.floor(start + (target - start) * easeOutQuart);
-
-            element.textContent = current;
-
-            if (progress < 1) {
-                requestAnimationFrame(updateCounter);
-            } else {
-                element.textContent = target;
-            }
-        };
-
-        requestAnimationFrame(updateCounter);
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateCounter(entry.target);
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    counters.forEach(counter => {
-        observer.observe(counter);
     });
 }
 
