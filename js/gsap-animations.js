@@ -533,20 +533,6 @@ function initParallax() {
         });
     }
 
-    // Hero wave parallax
-    const heroWave = document.querySelector('.hero-wave svg');
-    if (heroWave) {
-        gsap.to(heroWave, {
-            y: -50,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: '.hero',
-                start: 'top top',
-                end: 'bottom top',
-                scrub: 1
-            }
-        });
-    }
 
     // Section tags subtle parallax
     gsap.utils.toArray('.section-tag').forEach(tag => {
