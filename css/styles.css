@@ -1008,6 +1008,20 @@ h1, h2, h3, h4, h5, h6 {
     font-size: var(--font-size-base);
 }
 
+.app-button-img {
+    display: inline-block;
+    transition: transform var(--transition-base);
+}
+
+.app-button-img:hover {
+    transform: translateY(-2px);
+}
+
+.app-button-img img {
+    height: 44px;
+    width: auto;
+}
+
 /* Phone Mockup */
 .glper-mockup {
     display: flex;
