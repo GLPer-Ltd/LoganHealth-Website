@@ -114,10 +114,14 @@ function initUnitToggles() {
             if (metricInputs && imperialInputs) {
                 if (unit === 'metric') {
                     metricInputs.classList.remove('hidden');
+                    metricInputs.style.display = 'flex';
                     imperialInputs.classList.add('hidden');
+                    imperialInputs.style.display = 'none';
                 } else {
                     metricInputs.classList.add('hidden');
+                    metricInputs.style.display = 'none';
                     imperialInputs.classList.remove('hidden');
+                    imperialInputs.style.display = 'flex';
                 }
             }
 
