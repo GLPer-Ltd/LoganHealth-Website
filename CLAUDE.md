@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Static HTML/CSS/JS website for PE Health's GLP-1 weight loss treatment service. Hosted on GitHub Pages at https://petersedman.github.io/logan/
+Static HTML/CSS/JS website for Logan Health's GLP-1 weight loss treatment service. Hosted on GitHub Pages at https://petersedman.github.io/logan/
 
 Developed mobile first to support mobile devices such as phones, tablets but also desktop screens.
 

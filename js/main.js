@@ -1,5 +1,5 @@
 /* =============================================
-   PE Health - Main JavaScript
+   Logan Health - Main JavaScript
    ============================================= */
 
 document.addEventListener('DOMContentLoaded', function() {

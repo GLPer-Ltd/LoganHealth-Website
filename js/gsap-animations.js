@@ -1,5 +1,5 @@
 /* =============================================
-   PE Health - GSAP Animations
+   Logan Health - GSAP Animations
    ============================================= */
 
 // Check for reduced motion preference
