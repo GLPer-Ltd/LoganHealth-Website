@@ -1,5 +1,5 @@
 /* =============================================
-   PE Logan Pharmacy - Questionnaire Logic
+   PE Health - Questionnaire Logic
    ============================================= */
 
 document.addEventListener('DOMContentLoaded', function() {

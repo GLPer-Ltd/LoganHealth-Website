@@ -1,5 +1,5 @@
 /* =============================================
-   PE Logan Pharmacy - GSAP Animations
+   PE Health - GSAP Animations
    ============================================= */
 
 // Check for reduced motion preference

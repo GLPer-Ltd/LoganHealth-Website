@@ -1,5 +1,5 @@
 /* =============================================
-   PE Logan Pharmacy - Main JavaScript
+   PE Health - Main JavaScript
    ============================================= */
 
 document.addEventListener('DOMContentLoaded', function() {

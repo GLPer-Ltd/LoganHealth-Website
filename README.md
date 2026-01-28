@@ -1,6 +1,6 @@
-# PE Logan Pharmacy - GLP-1 Weight Loss Website
+# PE Health - GLP-1 Weight Loss Website
 
-A professional, modern website for PE Logan Pharmacy enabling customers to access GLP-1 weight loss medications through an online health questionnaire and consultation booking system.
+A professional, modern website for PE Health enabling customers to access GLP-1 weight loss medications through an online health questionnaire and consultation booking system.
 
 ## Features
 
@@ -120,7 +120,7 @@ git init
 git add .
 
 # Commit
-git commit -m "Initial commit - PE Logan GLP-1 website"
+git commit -m "Initial commit - PE Health GLP-1 website"
 
 # Add remote (replace with your repository URL)
 git remote add origin https://github.com/yourusername/pe-logan-glp1.git
@@ -207,4 +207,4 @@ For pharmacy-related enquiries:
 
 ---
 
-Built with care for PE Logan Pharmacy
+Built with care for PE Health
