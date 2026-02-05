@@ -8,6 +8,15 @@ Static HTML/CSS/JS website for Logan Health's GLP-1 weight loss treatment servic
 
 Developed mobile first to support mobile devices such as phones, tablets but also desktop screens.
 
+### Workspace Structure
+
+```
+LoganHealthWorkspace/
+├── LoganHealth.code-workspace    # VS Code workspace file
+├── website/                      # This repo (GLPer-Ltd/LoganHealth-Website)
+└── payments/                     # Cloudflare Worker (GLPer-Ltd/LoginHealth-Payments)
+```
+
 ## Development
 
 No build system - pure static files. To develop:
@@ -67,7 +76,7 @@ Payment is required before booking a consultation. The flow uses JotForm + Squar
 
 ### Cloudflare Worker (`loganhealth-payments`)
 
-**Location:** Separate repo at `/Users/petersedman/projects/loganhealth-payments/`
+**Location:** Separate repo at `../payments/` (GitHub: GLPer-Ltd/LoginHealth-Payments)
 
 **Endpoints:**
 - `POST /api/webhook` - Receives JotForm webhook, verifies payment, creates token, sends email
