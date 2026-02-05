@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Payment confirmed - Logan Health">
+    <title>Payment Confirmed | Logan Health</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/icons/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="images/icons/apple-touch-icon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .success-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .success-header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            padding: var(--spacing-6) var(--spacing-4);
+            text-align: center;
+        }
+
+        .success-header .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-2);
+            color: white;
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .success-header .logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .success-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-8) var(--spacing-4);
+        }
+
+        .success-card {
+            max-width: 560px;
+            text-align: center;
+            background: var(--color-white);
+            border-radius: var(--radius-2xl);
+            padding: var(--spacing-10);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto var(--spacing-6);
+            background: var(--color-success-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-success);
+        }
+
+        .success-icon svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .success-title {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            color: var(--color-text);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .success-message {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-light);
+            margin-bottom: var(--spacing-8);
+            line-height: 1.7;
+        }
+
+        .next-steps {
+            background: var(--color-bg-alt);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-6);
+            text-align: left;
+            margin-bottom: var(--spacing-8);
+        }
+
+        .next-steps h3 {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            margin-bottom: var(--spacing-4);
+            color: var(--color-text);
+        }
+
+        .next-steps ol {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            counter-reset: steps;
+        }
+
+        .next-steps li {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-3);
+            color: var(--color-text);
+            font-size: var(--font-size-base);
+        }
+
+        .next-steps li:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            background: var(--color-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+        }
+
+        .expiry-note {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-3);
+            background: var(--color-warning-light);
+            border-left: 4px solid var(--color-warning);
+            padding: var(--spacing-4);
+            border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+            margin-bottom: var(--spacing-8);
+            text-align: left;
+        }
+
+        .expiry-note svg {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            color: var(--color-warning);
+            margin-top: 2px;
+        }
+
+        .expiry-note p {
+            margin: 0;
+            font-size: var(--font-size-sm);
+            color: #92400E;
+        }
+
+        .success-actions {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-3);
+        }
+
+        .success-actions .btn {
+            width: 100%;
+        }
+
+        .help-text {
+            margin-top: var(--spacing-6);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-light);
+        }
+
+        .help-text a {
+            color: var(--color-primary);
+        }
+
+        @media (max-width: 640px) {
+            .success-card {
+                padding: var(--spacing-6);
+                margin: var(--spacing-4);
+            }
+
+            .success-title {
+                font-size: var(--font-size-2xl);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-page">
+        <!-- Header -->
+        <header class="success-header">
+            <a href="index.html" class="logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 28S4 20 4 12C4 7 8 4 12 4C14 4 15.5 5 16 6C16.5 5 18 4 20 4C24 4 28 7 28 12C28 20 16 28 16 28Z" fill="currentColor"/>
+                    <path d="M6 16H10L12 12L14 20L16 14L18 18L20 16H26" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Logan <span style="opacity: 0.9;">Health</span>
+            </a>
+        </header>
+
+        <!-- Content -->
+        <main class="success-content">
+            <div class="success-card">
+                <div class="success-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                </div>
+
+                <h1 class="success-title">Payment Confirmed!</h1>
+                <p class="success-message">Thank you for your payment. We've sent you an email with a link to book your consultation.</p>
+
+                <div class="next-steps">
+                    <h3>What happens next?</h3>
+                    <ol>
+                        <li>
+                            <span class="step-number">1</span>
+                            <span>Check your email inbox (and spam folder)</span>
+                        </li>
+                        <li>
+                            <span class="step-number">2</span>
+                            <span>Click the booking link in the email</span>
+                        </li>
+                        <li>
+                            <span class="step-number">3</span>
+                            <span>Choose a convenient time for your consultation</span>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="expiry-note">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12,6 12,12 16,14"/>
+                    </svg>
+                    <p><strong>Important:</strong> Your booking link expires in 72 hours. Please book your consultation before then.</p>
+                </div>
+
+                <div class="success-actions">
+                    <a href="index.html" class="btn btn-primary">Return to Homepage</a>
+                </div>
+
+                <p class="help-text">
+                    Didn't receive the email? Check your spam folder or <a href="mailto:support@loganhealth.com">contact us</a> for help.
+                </p>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
