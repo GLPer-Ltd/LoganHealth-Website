@@ -755,9 +755,16 @@ function handlePaymentSelection(paymentType) {
     const userData = questionnaireState.data;
     const params = new URLSearchParams();
 
-    // Prefill user data if available (field names depend on JotForm setup)
+    // Prefill user data if available
+    // JotForm name field expects separate first/last name parts
     if (userData.fullName) {
-        params.set('name', userData.fullName);
+        const nameParts = userData.fullName.trim().split(/\s+/);
+        const firstName = nameParts[0];
+        const lastName = nameParts.slice(1).join(' ');
+        params.set('name[first]', firstName);
+        if (lastName) {
+            params.set('name[last]', lastName);
+        }
     }
     if (userData.email) {
         params.set('email', userData.email);
