@@ -999,13 +999,84 @@
                 <div class="questionnaire-form">
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressFill"></div>
-                        <span class="progress-text" id="progressText">Step 1 of 5</span>
+                        <span class="progress-text" id="progressText">Step 1 of 11</span>
                     </div>
 
                     <form id="healthQuestionnaire" novalidate>
-                        <!-- Step 1: Measurements -->
+                        <!-- Step 1: Motivation & Goals -->
                         <div class="form-step active" data-step="1">
+                            <h3 class="step-heading">Your Goals</h3>
+
+                            <div class="form-group">
+                                <label class="form-label">What's the main reason for wanting to lose weight?</label>
+                                <p class="form-hint">Choose the one that best fits</p>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="weightLossReason" value="health" required>
+                                        <span class="radio-label">Improve my long-term health</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="weightLossReason" value="confidence">
+                                        <span class="radio-label">Feel more confident in my body</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="weightLossReason" value="energy">
+                                        <span class="radio-label">Feel stronger, more energised, and rested</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="weightLossReason" value="mobility">
+                                        <span class="radio-label">Improve my mobility and reduce pain</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="weightLossReason" value="exercise">
+                                        <span class="radio-label">Make it easier to move around and exercise</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="weightLossReason" value="healthissues">
+                                        <span class="radio-label">Address specific health issues</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="weightLossReason" value="mentalwellbeing">
+                                        <span class="radio-label">Improve my mental wellbeing</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="weightLossReason" value="other">
+                                        <span class="radio-label">Other</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">What's your weight loss goal?</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="weightLossGoal" value="upto1stone" required>
+                                        <span class="radio-label">Losing up to 1 stone (approx. 6.5 kg)</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="weightLossGoal" value="1to3.5stone">
+                                        <span class="radio-label">Losing 1 to 3.5 stone (approx. 6.5 to 22 kg)</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="weightLossGoal" value="morethan3.5stone">
+                                        <span class="radio-label">Losing more than 3.5 stone (approx. 22 kg)</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="weightLossGoal" value="notsure">
+                                        <span class="radio-label">Not sure, I just want to lose some weight</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Measurements -->
+                        <div class="form-step" data-step="2">
                             <h3 class="step-heading">Your Measurements</h3>
+
+                            <div class="form-warning">
+                                <p>We need this so we can calculate your body mass index (BMI) accurately. If you don't know this, please weigh yourself before continuing. <strong>Please ensure that you add the correct figures as any false or inaccurate information may lead to severe illness and serious harm.</strong></p>
+                                <p><strong>Do not guess your weight.</strong> If you're not sure how much you weigh, measure yourself first before entering this information. If there are discrepancies, it may result in your request being delayed or cancelled.</p>
+                            </div>
 
                             <div class="form-group">
                                 <label class="form-label">Height</label>
@@ -1064,8 +1135,8 @@
                             </div>
                         </div>
 
-                        <!-- Step 2: Personal Details -->
-                        <div class="form-step" data-step="2">
+                        <!-- Step 3: Personal Details -->
+                        <div class="form-step" data-step="3">
                             <h3 class="step-heading">Personal Details</h3>
 
                             <div class="form-group">
@@ -1097,16 +1168,32 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Ethnicity</label>
-                                <p class="form-hint">This helps us determine the appropriate BMI thresholds for eligibility</p>
+                                <label class="form-label">How would you describe your ethnic background?</label>
+                                <p class="form-hint">What's considered a healthy weight can be different depending on your ethnic background. Tell us how you describe yourself so we can ensure you're getting the right care.</p>
                                 <div class="radio-group">
                                     <label class="radio-option">
-                                        <input type="radio" name="ethnicity" value="white" required>
-                                        <span class="radio-label">White</span>
+                                        <input type="radio" name="ethnicity" value="prefernottosay" required>
+                                        <span class="radio-label">I'd prefer not to say</span>
                                     </label>
                                     <label class="radio-option">
-                                        <input type="radio" name="ethnicity" value="other">
-                                        <span class="radio-label">Asian, Black, Mixed, or Other ethnic group</span>
+                                        <input type="radio" name="ethnicity" value="asian">
+                                        <span class="radio-label">Asian or Asian British (includes mixed Asian, Pakistani, Bangladesh, Chinese &amp; any other Asian background)</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="ethnicity" value="black">
+                                        <span class="radio-label">Black, Black British, Caribbean, African (includes mixed Black and any other Black background)</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="ethnicity" value="middleeastern">
+                                        <span class="radio-label">Middle Eastern</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="ethnicity" value="white">
+                                        <span class="radio-label">White (includes English, Welsh, Scottish, Northern Irish or British, Irish, Gypsy or Irish Traveller, Roma or any other White Background)</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="ethnicity" value="noneofabove">
+                                        <span class="radio-label">None of the above</span>
                                     </label>
                                 </div>
                             </div>
@@ -1126,8 +1213,8 @@
                             </div>
                         </div>
 
-                        <!-- Step 3: Weight History -->
-                        <div class="form-step" data-step="3">
+                        <!-- Step 4: Weight History -->
+                        <div class="form-step" data-step="4">
                             <h3 class="step-heading">Weight History</h3>
 
                             <div class="form-group" id="highestWeightGroup">
@@ -1180,23 +1267,9 @@
                             </div>
                         </div>
 
-                        <!-- Step 4: Medical Screening -->
-                        <div class="form-step" data-step="4">
+                        <!-- Step 5: Medical Conditions -->
+                        <div class="form-step" data-step="5">
                             <h3 class="step-heading">Medical Information</h3>
-
-                            <div class="form-group" id="pregnancyGroup" style="display: none;">
-                                <label class="form-label">Are you pregnant, breastfeeding, or trying to conceive?</label>
-                                <div class="radio-group">
-                                    <label class="radio-option">
-                                        <input type="radio" name="pregnancy" value="no">
-                                        <span class="radio-label">No</span>
-                                    </label>
-                                    <label class="radio-option">
-                                        <input type="radio" name="pregnancy" value="yes">
-                                        <span class="radio-label">Yes</span>
-                                    </label>
-                                </div>
-                            </div>
 
                             <div class="form-group">
                                 <label class="form-label">Do you have any of the following conditions?</label>
@@ -1219,12 +1292,48 @@
                                         <span class="checkbox-label">Thyroid Conditions</span>
                                     </label>
                                     <label class="checkbox-option">
-                                        <input type="checkbox" name="conditions" value="eatingdisorder">
-                                        <span class="checkbox-label">Eating Disorder (current or history)</span>
-                                    </label>
-                                    <label class="checkbox-option">
                                         <input type="checkbox" name="conditions" value="pancreatitis">
                                         <span class="checkbox-label">Pancreatitis (current or history)</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="conditions" value="prediabetes">
+                                        <span class="checkbox-label">Prediabetes</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="conditions" value="type1diabetes">
+                                        <span class="checkbox-label">Type 1 Diabetes</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="conditions" value="highcholesterol">
+                                        <span class="checkbox-label">High Cholesterol</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="conditions" value="previousstroke">
+                                        <span class="checkbox-label">Previous Stroke</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="conditions" value="sleepapnoea">
+                                        <span class="checkbox-label">Obstructive Sleep Apnoea</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="conditions" value="acidreflux">
+                                        <span class="checkbox-label">Acid Reflux or GORD (and taking regular medication)</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="conditions" value="masld">
+                                        <span class="checkbox-label">Metabolic Dysfunction-Associated Steatotic Liver Disease (MASLD)</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="conditions" value="osteoarthritis">
+                                        <span class="checkbox-label">Osteoarthritis</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="conditions" value="depression">
+                                        <span class="checkbox-label">Depression (and taking regular medication)</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="conditions" value="pcos">
+                                        <span class="checkbox-label">Polycystic Ovary Syndrome (PCOS)</span>
                                     </label>
                                     <label class="checkbox-option">
                                         <input type="checkbox" name="conditions" value="none">
@@ -1232,20 +1341,395 @@
                                     </label>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Step 6: Safety Screening -->
+                        <div class="form-step" data-step="6">
+                            <h3 class="step-heading">Safety Screening</h3>
+                            <p class="form-hint step-intro">Questions to make sure treatment is safe and appropriate for you:</p>
 
                             <div class="form-group">
-                                <label class="form-label">Are you currently taking any medications?</label>
+                                <label class="form-label">Have you ever had an eating disorder?</label>
+                                <p class="form-hint">For example, bulimia or anorexia. If you think you may have an eating disorder, but have never been diagnosed, please select 'yes'.</p>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="eatingDisorder" value="no" required>
+                                        <span class="radio-label">No</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="eatingDisorder" value="yes">
+                                        <span class="radio-label">Yes</span>
+                                    </label>
+                                </div>
+                                <div class="conditional-detail" id="eatingDisorderDetailGroup" style="display: none;">
+                                    <label class="form-label">Please provide details</label>
+                                    <textarea id="eatingDisorderDetails" name="eatingDisorderDetails" class="form-textarea" placeholder="Please provide details about your eating disorder..." rows="3"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Do you have kidney disease?</label>
+                                <p class="form-hint">This might include chronic kidney disease (CKD), polycystic kidneys or kidney failure</p>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="kidneyDisease" value="no" required>
+                                        <span class="radio-label">No</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="kidneyDisease" value="yes">
+                                        <span class="radio-label">Yes</span>
+                                    </label>
+                                </div>
+                                <div class="conditional-detail" id="kidneyDiseaseDetailGroup" style="display: none;">
+                                    <label class="form-label">Please provide details</label>
+                                    <textarea id="kidneyDiseaseDetails" name="kidneyDiseaseDetails" class="form-textarea" placeholder="Please provide details about your kidney disease..." rows="3"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Are you currently pregnant, breastfeeding, or trying to get pregnant?</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="pregnantOrTrying" value="no" required>
+                                        <span class="radio-label">No</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="pregnantOrTrying" value="yes">
+                                        <span class="radio-label">Yes</span>
+                                    </label>
+                                </div>
+                                <div class="conditional-detail" id="pregnantOrTryingDetailGroup" style="display: none;">
+                                    <label class="form-label">Please provide details</label>
+                                    <textarea id="pregnantOrTryingDetails" name="pregnantOrTryingDetails" class="form-textarea" placeholder="Please provide details..." rows="3"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Are there any other significant illnesses or medical conditions that you haven't mentioned already?</label>
+                                <p class="form-hint">This could be a current or past condition.</p>
+                                <textarea id="otherConditions" name="otherConditions" class="form-textarea" placeholder="Please describe any other conditions..." rows="3"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Do you currently take any medication, or have you recently finished a course of medication, that you haven't mentioned already?</label>
+                                <p class="form-hint">This includes medication you take occasionally or in emergencies.</p>
                                 <textarea id="medications" name="medications" class="form-textarea" placeholder="Please list any medications you are currently taking..." rows="3"></textarea>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Do you have any allergies?</label>
+                                <label class="form-label">Are you allergic to any medicines or other substances?</label>
+                                <p class="form-hint">For example, peanuts, soya, or other medications (including weight loss medications you've previously used).</p>
                                 <textarea id="allergies" name="allergies" class="form-textarea" placeholder="Please list any known allergies..." rows="3"></textarea>
                             </div>
                         </div>
 
-                        <!-- Step 5: Contact Information -->
-                        <div class="form-step" data-step="5">
+                        <!-- Step 7: Medical History -->
+                        <div class="form-step" data-step="7">
+                            <h3 class="step-heading">Medical History</h3>
+
+                            <div class="form-group">
+                                <label class="form-label">Do you have, or have you ever had, any of the following conditions?</label>
+                                <p class="form-hint">For your safety, it's important to tell us about your medical history here. When you order, we'll tell your GP you're starting a new treatment, and we may check medical details with them, if necessary.</p>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="medicalHistory" value="weightlosssurgery">
+                                        <span class="checkbox-label">Any weight loss procedures or surgery in the last 12 months (such as gastric sleeve, gastric band, gastric bypass, or gastric balloon)</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="medicalHistory" value="thyroidcancer">
+                                        <span class="checkbox-label">Personal or family history of medullary thyroid cancer or multiple endocrine neoplasia type 2 (MEN2) syndrome</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="medicalHistory" value="activecancer">
+                                        <span class="checkbox-label">Any form of cancer that is currently being treated by a specialist</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="medicalHistory" value="retinopathy">
+                                        <span class="checkbox-label">Active retinopathy</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="medicalHistory" value="none_history">
+                                        <span class="checkbox-label">None of the above</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Have you been diagnosed with either thyroid disease, or liver disease or impairment?</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="thyroidOrLiver" value="no">
+                                        <span class="radio-label">No</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="thyroidOrLiver" value="yes">
+                                        <span class="radio-label">Yes</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">If you have type 2 diabetes, are you using insulin?</label>
+                                <p class="form-hint">If yes, it's important to let us know here. This treatment can affect insulin requirement and blood sugar regulation, so GLP-1 medication should only be prescribed to people with type 2 diabetes using insulin under the supervision of a diabetes team.</p>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="diabetesInsulin" value="no">
+                                        <span class="radio-label">No</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="diabetesInsulin" value="yes">
+                                        <span class="radio-label">Yes</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="diabetesInsulin" value="na">
+                                        <span class="radio-label">N/A - I don't have type 2 diabetes</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">If you have type 2 diabetes, are you taking any oral or injectable medication (other than metformin and insulin) to manage your blood sugar?</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="diabetesOtherMeds" value="no">
+                                        <span class="radio-label">No</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="diabetesOtherMeds" value="yes">
+                                        <span class="radio-label">Yes</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="diabetesOtherMeds" value="na">
+                                        <span class="radio-label">N/A - I don't have type 2 diabetes</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Do you have any of the following gallbladder issues?</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="gallbladderIssues" value="gallstones">
+                                        <span class="checkbox-label">Gallstones that have not been removed</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="gallbladderIssues" value="blockedbile">
+                                        <span class="checkbox-label">Blocked bile flow (cholelithiasis)</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="gallbladderIssues" value="gallbladderinfection">
+                                        <span class="checkbox-label">Gallbladder infection (cholecystitis)</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="gallbladderIssues" value="gallbladdersurgery">
+                                        <span class="checkbox-label">Gallbladder surgery in the past 12 months</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="gallbladderIssues" value="none_gallbladder">
+                                        <span class="checkbox-label">None of the above</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">We also need to know about the following health issues. Do you have, or have you ever had, any of these conditions?</label>
+                                <p class="form-hint">It's important to tell us about your medical history to help us provide safe and effective treatment recommendations.</p>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="additionalHistory" value="chronickidney">
+                                        <span class="checkbox-label">Chronic kidney disease with reduced function (eGFR less than 30ml/min &ndash; you can find this information on your kidney function blood test)</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="additionalHistory" value="severegiissue">
+                                        <span class="checkbox-label">Severe gastrointestinal disease, including inflammatory bowel disease (eg ulcerative colitis or Crohn's disease), or gastroparesis (delayed stomach emptying)</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="additionalHistory" value="malabsorption">
+                                        <span class="checkbox-label">Chronic malabsorption syndrome (problems absorbing nutrients)</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="additionalHistory" value="livercirrhosis">
+                                        <span class="checkbox-label">Liver cirrhosis or a liver transplant</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="additionalHistory" value="endocrinedisorder">
+                                        <span class="checkbox-label">An endocrine (hormone) disorder, such as overactive thyroid disease awaiting radioactive iodine or surgery, acromegaly, Addison's disease, Cushing's syndrome, congenital adrenal hyperplasia, or a growth hormone disorder</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="additionalHistory" value="alcoholrehab">
+                                        <span class="checkbox-label">Treatment or rehabilitation for excessive alcohol use</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="additionalHistory" value="cognitiveimpairment">
+                                        <span class="checkbox-label">Any cognitive or memory impairment, such as dementia, that may impact the ability to make decisions</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="additionalHistory" value="none_additional">
+                                        <span class="checkbox-label">None of the above</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 8: Medications & Lifestyle -->
+                        <div class="form-step" data-step="8">
+                            <h3 class="step-heading">Medications &amp; Lifestyle</h3>
+
+                            <div class="form-group">
+                                <label class="form-label">Are you currently taking any of the following medications?</label>
+                                <p class="form-hint">It's important you tell us about any of these medications to help us provide safe and effective treatment recommendations.</p>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="specificMedications" value="amiodarone">
+                                        <span class="checkbox-label">Amiodarone</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="specificMedications" value="carbamazepine">
+                                        <span class="checkbox-label">Carbamazepine</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="specificMedications" value="ciclosporin">
+                                        <span class="checkbox-label">Ciclosporin</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="specificMedications" value="clozapine">
+                                        <span class="checkbox-label">Clozapine</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="specificMedications" value="digoxin">
+                                        <span class="checkbox-label">Digoxin</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="specificMedications" value="fenfluramine">
+                                        <span class="checkbox-label">Fenfluramine</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="specificMedications" value="lithium">
+                                        <span class="checkbox-label">Lithium</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="specificMedications" value="mycophenolate">
+                                        <span class="checkbox-label">Mycophenolate mofetil</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="specificMedications" value="methotrexate">
+                                        <span class="checkbox-label">Oral methotrexate</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="specificMedications" value="phenobarbital">
+                                        <span class="checkbox-label">Phenobarbital</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="specificMedications" value="phenytoin">
+                                        <span class="checkbox-label">Phenytoin</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="specificMedications" value="somatrogon">
+                                        <span class="checkbox-label">Somatrogon</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="specificMedications" value="tacrolimus">
+                                        <span class="checkbox-label">Tacrolimus</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="specificMedications" value="theophylline">
+                                        <span class="checkbox-label">Theophylline</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="specificMedications" value="warfarin">
+                                        <span class="checkbox-label">Warfarin</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="specificMedications" value="none_meds">
+                                        <span class="checkbox-label">None of the above</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Are you currently a smoker?</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="isSmoker" value="no" required>
+                                        <span class="radio-label">No</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="isSmoker" value="yes">
+                                        <span class="radio-label">Yes</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Have you taken injectable weight loss medication in the last 6 months?</label>
+                                <p class="form-hint">This can be with Logan Health or another provider.</p>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="recentInjectableWeightLoss" value="no" required>
+                                        <span class="radio-label">No</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="recentInjectableWeightLoss" value="yes">
+                                        <span class="radio-label">Yes</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 9: Contraception Acknowledgment (female only - auto-skipped for males) -->
+                        <div class="form-step" data-step="9">
+                            <h3 class="step-heading">Contraception Acknowledgment</h3>
+
+                            <div class="form-group">
+                                <p class="form-hint step-intro">If you are sexually active, note that Mounjaro may reduce the effectiveness of the oral contraceptive pill. This means you'll need to use other forms of contraception (such as condoms or an IUD/implant) while taking Mounjaro to prevent unplanned pregnancy.</p>
+                                <label class="form-label">Do you agree?</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="contraceptionAgreement" value="yes" required>
+                                        <span class="radio-label">Yes</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="contraceptionAgreement" value="no">
+                                        <span class="radio-label">No</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 10: Important Information to Review -->
+                        <div class="form-step" data-step="10">
+                            <h3 class="step-heading">Important Information to Review</h3>
+                            <p class="form-hint step-intro">Please confirm that you have read and understood the below information related to your treatment plan:</p>
+
+                            <div class="important-info-list">
+                                <p>Once you place your order you will receive a follow up email. You will be sent a calendar link to book a date and time for your meeting with one of our healthcare team. If, for any reason following that meeting, that this medication is not suitable for you, you will be refunded in full.</p>
+
+                                <ul>
+                                    <li>This programme is not designed to manage or monitor weight-related comorbidities. It is strongly recommended that patients with weight-related comorbidities see their GP at regular intervals (3-6 months) to assess their overall health and ensure any treatment received from the GP is prescribed under the right dose.</li>
+                                    <li>Any treatment is solely for my own use and I understand that I cannot supply medication prescribed for me to anyone else.</li>
+                                    <li>A qualified clinician will review your consultation and determine whether a weight loss treatment plan is in your best interest and safe for you. Your clinician will consider your treatment preference along with their advice in your consultation.</li>
+                                    <li>Some medications such as Wegovy and Mounjaro require sub-cutaneous injection in the abdomen, thigh or upper arm.</li>
+                                    <li>Our treatment plans include medications that may cause side-effects such as nausea, diarrhoea, headaches, lack of appetite, bloating, constipation, and abdominal pain. I will contact Logan Health and inform my GP if I experience any side effects from treatment, begin any new medication, or if my medical conditions change during the course of treatment.</li>
+                                    <li>I agree to Logan Health notifying my GP that I am taking GLP-1 weight loss medication and to allow my GP to share information with MedExpress if they have any concerns.</li>
+                                    <li>I give my permission for Logan Health to request further medical information from my GP if necessary.</li>
+                                    <li>You are required to read the "Patient Information Booklet" included with your medication.</li>
+                                    <li>As part of your consultation, and to ensure regulatory compliance, patient safety our team will need to verify your BMI. This step is mandatory to verify your identity, confirm your eligibility, and prevent fraudulent orders.</li>
+                                    <li>If prescribed weight-loss treatment, you will need to complete a monthly follow-up consultation (online or face-to-face) on the final week of your current month's supply.</li>
+                                    <li>Your delivery address is suitable for receiving medications without children, elderly people or animals having access to them.</li>
+                                    <li>You have answered each question truthfully and accurately.</li>
+                                </ul>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="checkbox-option consent">
+                                    <input type="checkbox" name="importantInfoConfirmed" id="importantInfoConfirmed" required>
+                                    <span class="checkbox-label">Tick to confirm you understand the above</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Step 11: Contact Information -->
+                        <div class="form-step" data-step="11">
                             <h3 class="step-heading">Your Contact Details</h3>
 
                             <div class="form-group">
@@ -1281,6 +1765,13 @@
                                 <label class="checkbox-option consent">
                                     <input type="checkbox" name="consent" id="consent" required>
                                     <span class="checkbox-label">I consent to Logan Health processing my personal data for the purpose of this health assessment and potential GLP-1 treatment. I understand my data will be handled in accordance with GDPR.</span>
+                                </label>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="checkbox-option consent">
+                                    <input type="checkbox" name="termsAgreement" id="termsAgreement" required>
+                                    <span class="checkbox-label">I agree to Logan Health's <a href="/terms.html" target="_blank">Terms and Conditions</a> and <a href="/privacy.html" target="_blank">Privacy Policy</a>.</span>
                                 </label>
                             </div>
 
@@ -1327,6 +1818,7 @@
                             </div>
                             <h3 class="result-title">Great News!</h3>
                             <p class="result-message">Based on your responses, you may be eligible for GLP-1 treatment. Book a consultation with our pharmacist to discuss your personalised treatment plan.</p>
+                            <p class="result-message result-note">Once you place your order you will receive a follow up email. You will be sent a calendar link to book a date and time for your meeting with one of our healthcare team. If, for any reason following that meeting, that this medication is not suitable for you, you will be refunded in full.</p>
 
                             <!-- Payment Choice Section -->
                             <div class="payment-choice-section" id="paymentChoiceSection">
@@ -1413,6 +1905,33 @@
                                     </svg>
                                     After payment, you'll receive an email with a link to book your optional consultation.
                                 </p>
+                            </div>
+                        </div>
+
+                        <!-- Review Result (may not be eligible) -->
+                        <div class="result review" id="reviewResult" style="display: none;">
+                            <div class="result-icon review-icon">
+                                <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                                    <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="4"/>
+                                    <path d="M32 20V36" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+                                    <circle cx="32" cy="44" r="3" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <h3 class="result-title">We'd Like to Talk With You</h3>
+                            <p class="result-message" id="reviewMessage">Based on your responses, you may not be eligible for this treatment. However, you can speak with one of our health team to discuss your options and find the right path forward.</p>
+
+                            <div class="alternative-options">
+                                <h4>What happens next:</h4>
+                                <ul>
+                                    <li>One of our healthcare team will review your responses</li>
+                                    <li>We'll contact you to discuss your options</li>
+                                    <li>We may be able to offer alternative treatment paths</li>
+                                </ul>
+                            </div>
+
+                            <div class="result-actions">
+                                <a href="tel:02088581073" class="btn btn-primary">Call Us</a>
+                                <a href="mailto:hello@loganhealth.co.uk" class="btn btn-outline">Email Us</a>
                             </div>
                         </div>
 

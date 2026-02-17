@@ -11,14 +11,18 @@ document.addEventListener('DOMContentLoaded', function() {
    ============================================= */
 const questionnaireState = {
     currentStep: 1,
-    totalSteps: 5,
+    totalSteps: 11,
     data: {
-        // Step 1: Measurements
+        // Step 1 (new - Motivation & Goals)
+        weightLossReason: null,
+        weightLossGoal: null,
+
+        // Step 2: Measurements
         heightCm: null,
         weightKg: null,
         bmi: null,
 
-        // Step 2: Personal Details
+        // Step 3: Personal Details
         dobDay: null,
         dobMonth: null,
         dobYear: null,
@@ -26,23 +30,52 @@ const questionnaireState = {
         ethnicity: null,
         sex: null,
 
-        // Step 3: Weight History
+        // Step 4: Weight History
         highestWeightKg: null,
         targetWeightKg: null,
 
-        // Step 4: Medical
+        // Step 5: Medical Conditions
         pregnancy: null,
         conditions: [],
         medications: '',
         allergies: '',
 
-        // Step 5: Contact
+        // Step 6 (new safety screening)
+        eatingDisorder: null,
+        eatingDisorderDetails: '',
+        kidneyDisease: null,
+        kidneyDiseaseDetails: '',
+        pregnantOrTrying: null,
+        pregnantOrTryingDetails: '',
+        otherConditions: '',
+
+        // Step 7 (new medical history)
+        medicalHistory: [],
+        thyroidOrLiver: null,
+        diabetesInsulin: null,
+        diabetesOtherMeds: null,
+        gallbladderIssues: [],
+        additionalHistory: [],
+
+        // Step 8 (new medications & lifestyle)
+        specificMedications: [],
+        isSmoker: null,
+        recentInjectableWeightLoss: null,
+
+        // Step 9 (contraception)
+        contraceptionAgreement: null,
+
+        // Step 10 (important info)
+        importantInfoConfirmed: false,
+
+        // Step 11: Contact
         fullName: '',
         email: '',
         phone: '',
         contactMethod: 'email',
         consent: false,
-        marketing: false
+        marketing: false,
+        termsAgreement: false
     },
     eligible: null,
     eligibilityReason: ''
@@ -58,6 +91,8 @@ function initQuestionnaire() {
     initNavigationButtons();
     initConditionalFields();
     initConditionsCheckbox();
+    initSafetyScreeningFields();
+    initMedicalHistoryCheckboxes();
     initPaymentButtons();
 }
 
@@ -270,19 +305,59 @@ function calculateAge() {
    Conditional Fields
    ============================================= */
 function initConditionalFields() {
-    // Show pregnancy question only for females
-    const sexInputs = document.querySelectorAll('input[name="sex"]');
-    sexInputs.forEach(input => {
-        input.addEventListener('change', function() {
-            const pregnancyGroup = document.getElementById('pregnancyGroup');
-            if (this.value === 'female') {
-                pregnancyGroup.style.display = 'block';
-            } else {
-                pregnancyGroup.style.display = 'none';
-                // Reset pregnancy value
-                const pregnancyInputs = document.querySelectorAll('input[name="pregnancy"]');
-                pregnancyInputs.forEach(p => p.checked = false);
-            }
+    // No conditional fields to initialize on step load
+    // Safety screening conditional fields are handled by initSafetyScreeningFields()
+}
+
+/* =============================================
+   Safety Screening Conditional Fields
+   ============================================= */
+function initSafetyScreeningFields() {
+    const fields = [
+        { radio: 'eatingDisorder', detail: 'eatingDisorderDetailGroup' },
+        { radio: 'kidneyDisease', detail: 'kidneyDiseaseDetailGroup' },
+        { radio: 'pregnantOrTrying', detail: 'pregnantOrTryingDetailGroup' }
+    ];
+
+    fields.forEach(({ radio, detail }) => {
+        const radios = document.querySelectorAll(`input[name="${radio}"]`);
+        const detailGroup = document.getElementById(detail);
+        if (!detailGroup) return;
+
+        radios.forEach(r => {
+            r.addEventListener('change', function() {
+                detailGroup.style.display = this.value === 'yes' ? 'block' : 'none';
+            });
+        });
+    });
+}
+
+/* =============================================
+   Medical History Checkbox Logic
+   ============================================= */
+function initMedicalHistoryCheckboxes() {
+    const groups = [
+        { name: 'medicalHistory', noneValue: 'none_history' },
+        { name: 'gallbladderIssues', noneValue: 'none_gallbladder' },
+        { name: 'additionalHistory', noneValue: 'none_additional' },
+        { name: 'specificMedications', noneValue: 'none_meds' }
+    ];
+
+    groups.forEach(({ name, noneValue }) => {
+        const checkboxes = document.querySelectorAll(`input[name="${name}"]`);
+        const noneCheckbox = document.querySelector(`input[name="${name}"][value="${noneValue}"]`);
+        if (!noneCheckbox) return;
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', function() {
+                if (this.value === noneValue && this.checked) {
+                    checkboxes.forEach(other => {
+                        if (other !== noneCheckbox) other.checked = false;
+                    });
+                } else if (this.value !== noneValue && this.checked) {
+                    noneCheckbox.checked = false;
+                }
+            });
         });
     });
 }
@@ -335,6 +410,15 @@ function navigateStep(direction) {
 
     // Update step
     questionnaireState.currentStep += direction;
+
+    // Skip step 9 (contraception) for non-female users
+    if (questionnaireState.currentStep === 9 && questionnaireState.data.sex !== 'female') {
+        questionnaireState.currentStep += direction;
+    }
+
+    // Bounds check
+    if (questionnaireState.currentStep < 1) questionnaireState.currentStep = 1;
+    if (questionnaireState.currentStep > questionnaireState.totalSteps) questionnaireState.currentStep = questionnaireState.totalSteps;
 
     // Show/hide steps
     updateStepVisibility();
@@ -394,6 +478,18 @@ function validateCurrentStep() {
 
     switch (step) {
         case 1:
+            // Validate motivation & goals
+            if (!document.querySelector('input[name="weightLossReason"]:checked')) {
+                errorMessage = 'Please select your main reason for wanting to lose weight';
+                isValid = false;
+            }
+            if (!document.querySelector('input[name="weightLossGoal"]:checked')) {
+                errorMessage = 'Please select your weight loss goal';
+                isValid = false;
+            }
+            break;
+
+        case 2:
             // Validate height and weight
             const heightCm = getHeightInCm();
             const weightKg = getWeightInKg();
@@ -413,7 +509,7 @@ function validateCurrentStep() {
             }
             break;
 
-        case 2:
+        case 3:
             // Validate DOB
             const day = document.getElementById('dobDay').value;
             const month = document.getElementById('dobMonth').value;
@@ -435,43 +531,85 @@ function validateCurrentStep() {
             }
 
             // Validate ethnicity
-            const ethnicity = document.querySelector('input[name="ethnicity"]:checked');
-            if (!ethnicity) {
-                errorMessage = 'Please select your ethnicity';
+            if (!document.querySelector('input[name="ethnicity"]:checked')) {
+                errorMessage = 'Please select your ethnic background';
                 isValid = false;
             }
 
             // Validate sex
-            const sex = document.querySelector('input[name="sex"]:checked');
-            if (!sex) {
+            if (!document.querySelector('input[name="sex"]:checked')) {
                 errorMessage = 'Please select your sex assigned at birth';
                 isValid = false;
             }
             break;
 
-        case 3:
-            // Highest weight is optional if BMI >= 30
-            // Target weight is always optional
-            break;
-
         case 4:
-            // Check pregnancy if female
-            const isFemale = questionnaireState.data.sex === 'female';
-            if (isFemale) {
-                const pregnancy = document.querySelector('input[name="pregnancy"]:checked');
-                if (!pregnancy) {
-                    errorMessage = 'Please answer the pregnancy question';
-                    isValid = false;
-                }
-            }
+            // Weight history - optional
             break;
 
         case 5:
-            // Validate contact details
+            // Medical conditions - no required validation
+            break;
+
+        case 6:
+            // Safety screening
+            if (!document.querySelector('input[name="eatingDisorder"]:checked')) {
+                errorMessage = 'Please answer the eating disorder question';
+                isValid = false;
+            }
+            if (!document.querySelector('input[name="kidneyDisease"]:checked')) {
+                errorMessage = 'Please answer the kidney disease question';
+                isValid = false;
+            }
+            if (!document.querySelector('input[name="pregnantOrTrying"]:checked')) {
+                errorMessage = 'Please answer the pregnancy question';
+                isValid = false;
+            }
+            break;
+
+        case 7:
+            // Medical history - no required validation (all sections optional)
+            break;
+
+        case 8:
+            // Medications & lifestyle
+            if (!document.querySelector('input[name="isSmoker"]:checked')) {
+                errorMessage = 'Please answer the smoking question';
+                isValid = false;
+            }
+            if (!document.querySelector('input[name="recentInjectableWeightLoss"]:checked')) {
+                errorMessage = 'Please answer the injectable weight loss medication question';
+                isValid = false;
+            }
+            break;
+
+        case 9:
+            // Contraception (only shown for females)
+            const contraception = document.querySelector('input[name="contraceptionAgreement"]:checked');
+            if (!contraception) {
+                errorMessage = 'Please answer the contraception question';
+                isValid = false;
+            } else if (contraception.value === 'no') {
+                errorMessage = 'You must agree to use alternative contraception while taking Mounjaro to proceed';
+                isValid = false;
+            }
+            break;
+
+        case 10:
+            // Important information
+            if (!document.getElementById('importantInfoConfirmed').checked) {
+                errorMessage = 'Please confirm you have read and understood the important information';
+                isValid = false;
+            }
+            break;
+
+        case 11:
+            // Contact details
             const name = document.getElementById('fullName').value.trim();
             const email = document.getElementById('email').value.trim();
             const phone = document.getElementById('phone').value.trim();
             const consent = document.getElementById('consent').checked;
+            const terms = document.getElementById('termsAgreement').checked;
 
             if (!name || name.length < 2) {
                 markError('fullName');
@@ -488,6 +626,11 @@ function validateCurrentStep() {
             if (!phone || !window.utils.isValidUKPhone(phone)) {
                 markError('phone');
                 errorMessage = 'Please enter a valid UK phone number';
+                isValid = false;
+            }
+
+            if (!terms) {
+                errorMessage = 'Please agree to the Terms and Conditions and Privacy Policy';
                 isValid = false;
             }
 
@@ -537,20 +680,32 @@ function saveStepData() {
 
     switch (step) {
         case 1:
-            data.heightCm = getHeightInCm();
-            data.weightKg = getWeightInKg();
-            data.bmi = data.weightKg / Math.pow(data.heightCm / 100, 2);
+            // Motivation & Goals
+            const reason = document.querySelector('input[name="weightLossReason"]:checked');
+            const goal = document.querySelector('input[name="weightLossGoal"]:checked');
+            data.weightLossReason = reason ? reason.value : null;
+            data.weightLossGoal = goal ? goal.value : null;
             break;
 
         case 2:
+            // Measurements
+            data.heightCm = getHeightInCm();
+            data.weightKg = getWeightInKg();
+            if (data.heightCm && data.weightKg) {
+                data.bmi = data.weightKg / Math.pow(data.heightCm / 100, 2);
+            }
+            break;
+
+        case 3:
+            // Personal Details
             const ethnicity = document.querySelector('input[name="ethnicity"]:checked');
             const sex = document.querySelector('input[name="sex"]:checked');
             data.ethnicity = ethnicity ? ethnicity.value : null;
             data.sex = sex ? sex.value : null;
             break;
 
-        case 3:
-            // Get highest weight
+        case 4:
+            // Weight History
             const hwMetric = document.querySelector('[data-target="highestWeight"].unit-btn.active').dataset.unit === 'metric';
             if (hwMetric) {
                 data.highestWeightKg = parseFloat(document.getElementById('highestWeightKg').value) || null;
@@ -560,7 +715,6 @@ function saveStepData() {
                 data.highestWeightKg = hwSt > 0 ? (hwSt * 6.35029) + (hwLbs * 0.453592) : null;
             }
 
-            // Get target weight
             const twMetric = document.querySelector('[data-target="targetWeight"].unit-btn.active').dataset.unit === 'metric';
             if (twMetric) {
                 data.targetWeightKg = parseFloat(document.getElementById('targetWeightKg').value) || null;
@@ -571,18 +725,73 @@ function saveStepData() {
             }
             break;
 
-        case 4:
-            const pregnancy = document.querySelector('input[name="pregnancy"]:checked');
-            data.pregnancy = pregnancy ? pregnancy.value : null;
-
+        case 5:
+            // Medical Conditions
             const conditions = document.querySelectorAll('input[name="conditions"]:checked');
             data.conditions = Array.from(conditions).map(c => c.value);
+            break;
 
+        case 6:
+            // Safety Screening
+            const ed = document.querySelector('input[name="eatingDisorder"]:checked');
+            data.eatingDisorder = ed ? ed.value : null;
+            data.eatingDisorderDetails = document.getElementById('eatingDisorderDetails').value.trim();
+
+            const kd = document.querySelector('input[name="kidneyDisease"]:checked');
+            data.kidneyDisease = kd ? kd.value : null;
+            data.kidneyDiseaseDetails = document.getElementById('kidneyDiseaseDetails').value.trim();
+
+            const pt = document.querySelector('input[name="pregnantOrTrying"]:checked');
+            data.pregnantOrTrying = pt ? pt.value : null;
+            data.pregnancy = data.pregnantOrTrying; // backward compat for eligibility check
+            data.pregnantOrTryingDetails = document.getElementById('pregnantOrTryingDetails').value.trim();
+
+            data.otherConditions = document.getElementById('otherConditions').value.trim();
             data.medications = document.getElementById('medications').value.trim();
             data.allergies = document.getElementById('allergies').value.trim();
             break;
 
-        case 5:
+        case 7:
+            // Medical History
+            data.medicalHistory = Array.from(document.querySelectorAll('input[name="medicalHistory"]:checked')).map(c => c.value);
+
+            const tl = document.querySelector('input[name="thyroidOrLiver"]:checked');
+            data.thyroidOrLiver = tl ? tl.value : null;
+
+            const di = document.querySelector('input[name="diabetesInsulin"]:checked');
+            data.diabetesInsulin = di ? di.value : null;
+
+            const dom = document.querySelector('input[name="diabetesOtherMeds"]:checked');
+            data.diabetesOtherMeds = dom ? dom.value : null;
+
+            data.gallbladderIssues = Array.from(document.querySelectorAll('input[name="gallbladderIssues"]:checked')).map(c => c.value);
+            data.additionalHistory = Array.from(document.querySelectorAll('input[name="additionalHistory"]:checked')).map(c => c.value);
+            break;
+
+        case 8:
+            // Medications & Lifestyle
+            data.specificMedications = Array.from(document.querySelectorAll('input[name="specificMedications"]:checked')).map(c => c.value);
+
+            const smoker = document.querySelector('input[name="isSmoker"]:checked');
+            data.isSmoker = smoker ? smoker.value : null;
+
+            const injectable = document.querySelector('input[name="recentInjectableWeightLoss"]:checked');
+            data.recentInjectableWeightLoss = injectable ? injectable.value : null;
+            break;
+
+        case 9:
+            // Contraception
+            const ca = document.querySelector('input[name="contraceptionAgreement"]:checked');
+            data.contraceptionAgreement = ca ? ca.value : null;
+            break;
+
+        case 10:
+            // Important Info
+            data.importantInfoConfirmed = document.getElementById('importantInfoConfirmed').checked;
+            break;
+
+        case 11:
+            // Contact Details
             data.fullName = document.getElementById('fullName').value.trim();
             data.email = document.getElementById('email').value.trim();
             data.phone = document.getElementById('phone').value.trim();
@@ -591,6 +800,7 @@ function saveStepData() {
             data.contactMethod = contactMethod ? contactMethod.value : 'email';
 
             data.consent = document.getElementById('consent').checked;
+            data.termsAgreement = document.getElementById('termsAgreement').checked;
             data.marketing = document.getElementById('marketing').checked;
             break;
     }
@@ -641,19 +851,15 @@ function checkEligibility() {
         return { eligible, reason };
     }
 
-    // Pregnancy check
-    if (data.pregnancy === 'yes') {
-        eligible = false;
-        reason = 'GLP-1 treatments are not suitable during pregnancy, breastfeeding, or while trying to conceive.';
-        return { eligible, reason };
-    }
-
     // BMI check with ethnicity adjustment
-    const bmiThreshold = data.ethnicity === 'other' ? 27.5 : 30;
-    const bmiWithConditionsThreshold = data.ethnicity === 'other' ? 25 : 27;
+    // Lower thresholds for Asian, Black, Middle Eastern (NICE guidance)
+    const lowerThresholdEthnicities = ['asian', 'black', 'middleeastern'];
+    const useLowerThreshold = lowerThresholdEthnicities.includes(data.ethnicity);
+    const bmiThreshold = useLowerThreshold ? 27.5 : 30;
+    const bmiWithConditionsThreshold = useLowerThreshold ? 25 : 27;
 
     // Check if user has weight-related conditions
-    const weightRelatedConditions = ['type2diabetes', 'highbloodpressure', 'heartdisease'];
+    const weightRelatedConditions = ['type2diabetes', 'highbloodpressure', 'heartdisease', 'prediabetes', 'highcholesterol', 'sleepapnoea', 'osteoarthritis'];
     const hasWeightRelatedCondition = data.conditions.some(c => weightRelatedConditions.includes(c));
 
     // Calculate highest BMI if provided
@@ -670,14 +876,18 @@ function checkEligibility() {
     } else {
         eligible = false;
         reason = `Based on your BMI of ${data.bmi.toFixed(1)}, you may not currently meet the eligibility criteria for GLP-1 treatment. The minimum BMI requirement is ${bmiThreshold} (or ${bmiWithConditionsThreshold} with weight-related health conditions).`;
+        return { eligible, reason };
     }
 
-    // Check for contraindicated conditions
-    const contraindicatedConditions = ['eatingdisorder', 'pancreatitis'];
-    const hasContraindication = data.conditions.some(c => contraindicatedConditions.includes(c));
+    // Safety screening flags — these result in "review" status, not outright rejection
+    if (data.eatingDisorder === 'yes' || data.kidneyDisease === 'yes' || data.pregnantOrTrying === 'yes') {
+        eligible = 'review';
+        reason = 'Based on your responses, you may not be eligible for this treatment. However, you can speak with one of our health team to discuss your options and find the right path forward.';
+        return { eligible, reason };
+    }
 
-    if (hasContraindication && eligible) {
-        // Don't automatically disqualify, but flag for pharmacist review
+    // Check for pancreatitis (pharmacist review flag)
+    if (data.conditions.includes('pancreatitis')) {
         reason = 'Based on your medical history, our pharmacist will need to conduct a thorough assessment to determine your suitability for GLP-1 treatment.';
     }
 
@@ -691,20 +901,30 @@ function showResults() {
     const form = document.getElementById('healthQuestionnaire');
     const resultContainer = document.getElementById('resultContainer');
     const eligibleResult = document.getElementById('eligibleResult');
+    const reviewResult = document.getElementById('reviewResult');
     const notEligibleResult = document.getElementById('notEligibleResult');
 
     // Hide form, show results
     form.style.display = 'none';
     resultContainer.style.display = 'block';
 
-    if (questionnaireState.eligible) {
-        eligibleResult.style.display = 'block';
-        notEligibleResult.style.display = 'none';
-        // Payment options are shown instead of direct Calendly booking
-    } else {
-        eligibleResult.style.display = 'none';
-        notEligibleResult.style.display = 'block';
+    // Hide all result panels first
+    eligibleResult.style.display = 'none';
+    if (reviewResult) reviewResult.style.display = 'none';
+    notEligibleResult.style.display = 'none';
 
+    if (questionnaireState.eligible === true) {
+        eligibleResult.style.display = 'block';
+    } else if (questionnaireState.eligible === 'review') {
+        if (reviewResult) {
+            reviewResult.style.display = 'block';
+        }
+        if (questionnaireState.eligibilityReason) {
+            const reviewMessage = document.getElementById('reviewMessage');
+            if (reviewMessage) reviewMessage.textContent = questionnaireState.eligibilityReason;
+        }
+    } else {
+        notEligibleResult.style.display = 'block';
         if (questionnaireState.eligibilityReason) {
             document.getElementById('notEligibleMessage').textContent = questionnaireState.eligibilityReason;
         }
