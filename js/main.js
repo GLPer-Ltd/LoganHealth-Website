@@ -175,12 +175,14 @@ window.utils = {
 
 // Rotating review banner
 (function initReviewBanner() {
-    // PLACEHOLDER: Replace with real Google reviews from P E Logan Pharmacy
     var reviews = [
-        '"[Google review 1 — replace with real review text]"',
-        '"[Google review 2 — replace with real review text]"',
-        '"[Google review 3 — replace with real review text]"',
-        '"[Google review 4 — replace with real review text]"'
+        '"Excellent Service\u2026they go above and beyond\u2026very friendly and helpful, really great service" \u2014 Arthur A.',
+        '"Fantastic service. Professional, kind, helpful, warm and just brilliant all around. Highly recommended!!" \u2014 Georgia A.',
+        '"Always gone above and beyond\u2026friendly, efficient and have been really helpful" \u2014 Maisie B.',
+        '"Very friendly and welcoming people. They just care for your health and take in mind your feelings" \u2014 Marcin L.',
+        '"So helpful and knowledgeable, always willing to help out and provide advice" \u2014 Amanda D.',
+        '"The team always delivers an exceptional experience" \u2014 Georgis P.',
+        '"Logan health are really supportive and take time to understand your worries and concerns" \u2014 Ella A.'
     ];
 
     var bannerText = document.getElementById('reviewBannerText');

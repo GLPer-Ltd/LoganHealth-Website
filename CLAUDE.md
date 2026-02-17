@@ -155,12 +155,55 @@ All colors defined as CSS variables in `:root`. To change brand colors, edit the
 --color-secondary: #F97316;    /* CTA coral */
 ```
 
+## index.html Section Map (top to bottom)
+
+The homepage is a large single-page layout. Key sections and their approximate line ranges:
+
+| Section | Lines (approx) | HTML ID / Class | Notes |
+|---------|----------------|-----------------|-------|
+| Navigation | 28-58 | `#navbar` | Nav links + CTA button |
+| Review Banner | 60-72 | `#reviewBanner` | Rotating review ticker at top |
+| Hero | 74-142 | `#hero` | Video bg, title, subtitle, trust badges, image tiles |
+| How It Works | 144-256 | `#how-it-works` | 3-step cards with connector arrows |
+| What Makes Us Different | 258-333 | `.why-different` | Checklist grid of differentiators + footnote |
+| What's Included in Price | 335-407 | `#whats-included` | 5 image+text cards (medication price inclusions) |
+| Testimonials (Google Reviews) | 409-510 | `.reviews` | Real patient review cards |
+| Treatments | 512-682 | `#treatments` | Wegovy/Mounjaro cards + comparison table |
+| Success Stories | 684-776 | `.success-stories` | Patient transformation stories |
+| Companion App | 778-894 | `#glper-app` | App features list + screenshot |
+| Pricing | ~896-980 | `#pricing` | One-off vs subscription pricing cards |
+| About Us | ~982-1050 | `#about` | Team info, pharmacy history |
+| FAQ | ~1052-1200 | `#faq` | Accordion FAQ items |
+| Questionnaire | ~1200+ | `#questionnaire` | Multi-step eligibility form |
+| Footer | end | `footer` | Contact info, links, legal |
+
+**Note:** Line numbers shift as content is edited. Use section IDs/classes to locate sections reliably.
+
+## Image Assets
+
+| Directory | Contents |
+|-----------|----------|
+| `images/hero/` | Hero section image tiles (happy customer, calorie deficit, recipe, consultation) |
+| `images/included/` | "What's included in price" section images (jab, consultation, deficit, food, app) |
+| `images/illustrations/` | Treatment info illustrations (what to expect, eating well, side effects) |
+| `images/` | App screenshots (`glper-app.png`), store buttons, medication pen images, logo |
+
 ## Key Configuration Points
 
-1. **Formspree endpoint** - `js/formHandler.js` line 17: `FORMSPREE_ENDPOINT`
-2. **Calendly URL** - `index.html` search for `calendly-inline-widget`
-3. **Treatment pricing** - `index.html` search for `price-amount`
-4. **Pharmacy contact info** - Multiple locations in `index.html`
+1. **Formspree endpoint** — `js/formHandler.js` line 17: `FORMSPREE_ENDPOINT`
+2. **Calendly URL** — `index.html` search for `calendly-inline-widget`
+3. **Treatment pricing** — `index.html` search for `price-amount`
+4. **Monthly plan pricing** — Hero section, `.hero-pricing` element (placeholder `£XX` pending confirmation)
+5. **Pharmacy contact info** — Multiple locations in `index.html`
+6. **App store links** — Removed from homepage per Feb 2026 update; app is now referenced generically
+7. **Review banner data** — `js/main.js` contains the rotating review array
+
+## Branding Notes
+
+- The app was originally branded "GLPer" and is being rebranded to "Logan Health" across the site
+- Nav link changed from "GLPer App" to "App" (Feb 2026)
+- App section title changed from "Track Your Progress with GLPer" to "Track Your Progress with our App"
+- App Store / Google Play download buttons removed from homepage
 
 ## Eligibility Logic (questionnaire.js)
 

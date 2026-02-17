@@ -578,6 +578,13 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--color-primary);
 }
 
+.hero-pricing {
+    margin-top: 1rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
 .hero-image {
     display: flex;
     justify-content: center;
@@ -3336,74 +3343,50 @@ a.blog-card {
     font-style: italic;
 }
 
-/* What You Get / Included section */
-.section.what-you-get {
-    background: var(--color-bg-alt);
-}
-
-.included-grid {
+/* What's Included in Medication Price */
+.included-price-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-6);
-    margin-top: var(--spacing-10);
-    position: relative;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5rem;
 }
 
-.included-item {
+.included-price-card {
     text-align: center;
-    padding: var(--spacing-8) var(--spacing-6);
-    border-radius: var(--radius-xl);
-    background: var(--color-white);
-    border: 1px solid var(--color-border);
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.included-item:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-lg);
+.included-price-img {
+    aspect-ratio: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--color-gray-100);
+    margin-bottom: 1rem;
 }
 
-.included-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: var(--radius-full);
-    background: rgba(13, 148, 136, 0.1);
-    color: var(--color-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto var(--spacing-5);
+.included-price-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
-.included-item h3 {
-    font-size: var(--font-size-lg);
-    font-weight: 700;
-    margin-bottom: var(--spacing-2);
+.included-price-text {
+    font-size: 0.95rem;
+    font-weight: 500;
     color: var(--color-text);
+    line-height: 1.4;
 }
 
-.included-item p {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-light);
-    line-height: 1.7;
-}
-
-@media (max-width: 968px) {
-    .included-grid {
+@media (max-width: 768px) {
+    .included-price-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: var(--spacing-5);
     }
 }
 
-@media (max-width: 640px) {
-    .included-grid {
+@media (max-width: 480px) {
+    .included-price-grid {
         grid-template-columns: 1fr;
-        gap: var(--spacing-4);
-    }
-
-    .included-item {
-        padding: var(--spacing-6) var(--spacing-4);
+        max-width: 300px;
+        margin: 0 auto;
     }
 }
 
@@ -3461,6 +3444,21 @@ a.blog-card {
 
 .hero-tile-accent .hero-tile-label {
     color: rgba(255, 255, 255, 0.85);
+}
+
+.hero-tiles-images .hero-tile-img {
+    padding: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    aspect-ratio: 1;
+    background: var(--color-gray-100);
+}
+
+.hero-tiles-images .hero-tile-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 @media (max-width: 968px) {
