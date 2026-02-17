@@ -175,13 +175,13 @@ window.utils = {
 
 // Rotating review banner
 (function initReviewBanner() {
+    // PLACEHOLDER: Replace with real Google reviews from P E Logan Pharmacy
     var reviews = [
-        '"The team made the whole process so easy. I\'ve lost 18kg in 6 months!"',
-        '"My blood sugar is now under control and I feel better than I have in years."',
-        '"The first time I\'ve been able to lose weight and keep it off!"',
-        '"They explained everything clearly and supported me every step of the way."'
+        '"[Google review 1 — replace with real review text]"',
+        '"[Google review 2 — replace with real review text]"',
+        '"[Google review 3 — replace with real review text]"',
+        '"[Google review 4 — replace with real review text]"'
     ];
-    // TODO: Replace with real Google reviews once team provides them
 
     var bannerText = document.getElementById('reviewBannerText');
     if (!bannerText || reviews.length === 0) return;
