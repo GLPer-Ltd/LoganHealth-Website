@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://loganhealth.co.uk/sitemap.xml
