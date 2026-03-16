@@ -3518,3 +3518,105 @@ a.blog-card {
         gap: var(--spacing-1);
     }
 }
+
+/* =============================================
+   TDEE Calculator
+   ============================================= */
+.tdee-calculator-card {
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--color-white);
+    padding: var(--spacing-8);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+}
+
+.tdee-calculator-card .form-group {
+    margin-bottom: var(--spacing-6);
+}
+
+.tdee-results {
+    margin-top: var(--spacing-8);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-4);
+}
+
+.tdee-result-card {
+    text-align: center;
+    padding: var(--spacing-6);
+    border-radius: var(--radius-lg);
+}
+
+.tdee-result-card.tdee-maintenance {
+    background: var(--color-primary-50);
+    border: 2px solid var(--color-primary-100);
+}
+
+.tdee-result-card.tdee-deficit {
+    background: rgba(249, 115, 22, 0.05);
+    border: 2px solid rgba(249, 115, 22, 0.15);
+}
+
+.tdee-result-label {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-2);
+    font-weight: 500;
+}
+
+.tdee-result-value {
+    display: block;
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.tdee-result-card.tdee-deficit .tdee-result-value {
+    color: var(--color-secondary);
+}
+
+.tdee-result-unit {
+    display: block;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-lighter);
+    margin-top: var(--spacing-1);
+}
+
+.tdee-hero-benefits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-3);
+    margin-top: var(--spacing-6);
+    margin-bottom: var(--spacing-8);
+}
+
+.tdee-hero-benefit {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-2) var(--spacing-4);
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    color: var(--color-white);
+}
+
+.tdee-hero-benefit svg {
+    flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+    .tdee-calculator-card {
+        padding: var(--spacing-5);
+    }
+
+    .tdee-results {
+        grid-template-columns: 1fr;
+    }
+
+    .tdee-hero-benefits {
+        justify-content: center;
+    }
+}
