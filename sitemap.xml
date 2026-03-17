@@ -25,6 +25,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://loganhealth.co.uk/tdee.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://loganhealth.co.uk/privacy.html</loc>
     <priority>0.3</priority>
   </url>
