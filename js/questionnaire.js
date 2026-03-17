@@ -935,70 +935,40 @@ function showResults() {
 }
 
 /* =============================================
-   Payment Button Handlers
+   Payment Button Handler
    ============================================= */
-// JotForm URLs
-const JOTFORM_URLS = {
-    'one-off': 'https://pci.jotform.com/form/260355646726059',
-    'subscription': 'https://pci.jotform.com/form/260355571683058'
-};
-
 function initPaymentButtons() {
     const oneOffBtn = document.getElementById('oneOffPaymentBtn');
     const subscriptionBtn = document.getElementById('subscriptionPaymentBtn');
 
+    // Both buttons go to the same payment page (single price)
     if (oneOffBtn) {
         oneOffBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            handlePaymentSelection('one-off');
+            redirectToPayment();
         });
     }
 
     if (subscriptionBtn) {
         subscriptionBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            handlePaymentSelection('subscription');
+            redirectToPayment();
         });
     }
 }
 
-function handlePaymentSelection(paymentType) {
-    const jotformUrl = JOTFORM_URLS[paymentType];
-
-    if (!jotformUrl || jotformUrl.includes('YOUR_')) {
-        console.warn('JotForm URL not configured for:', paymentType);
-        alert('Payment form is being set up. Please contact us directly to proceed.');
-        return;
-    }
-
-    // Build URL with prefilled data from questionnaire
+function redirectToPayment() {
     const userData = questionnaireState.data;
     const params = new URLSearchParams();
 
-    // Prefill user data if available
-    // JotForm name field expects separate first/last name parts
     if (userData.fullName) {
-        const nameParts = userData.fullName.trim().split(/\s+/);
-        const firstName = nameParts[0];
-        const lastName = nameParts.slice(1).join(' ');
-        params.set('name[first]', firstName);
-        if (lastName) {
-            params.set('name[last]', lastName);
-        }
+        params.set('name', userData.fullName.trim());
     }
     if (userData.email) {
-        params.set('email', userData.email);
+        params.set('email', userData.email.trim());
     }
 
-    // Add payment type identifier
-    params.set('paymentType', paymentType);
-
-    const finalUrl = params.toString()
-        ? `${jotformUrl}?${params.toString()}`
-        : jotformUrl;
-
-    // Redirect to JotForm
-    window.location.href = finalUrl;
+    window.location.href = `payment.html?${params.toString()}`;
 }
 
 /* =============================================
