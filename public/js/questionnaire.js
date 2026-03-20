@@ -84,7 +84,6 @@ function initQuestionnaire() {
     initConditionsCheckbox();
     initSafetyScreeningFields();
     initMedicalHistoryCheckboxes();
-    initPaymentButtons();
 }
 
 /* =============================================
@@ -776,7 +775,13 @@ function submitQuestionnaire(e) {
         console.warn('Could not store questionnaire data:', e);
     }
 
-    // Show results
+    // If eligible, redirect straight to medication selection page
+    if (questionnaireState.eligible === true) {
+        window.location.href = '/choose-medication';
+        return;
+    }
+
+    // For review/not-eligible, show inline results
     showResults();
 }
 
@@ -882,24 +887,6 @@ function showResults() {
 
     // Scroll to results
     resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-/* =============================================
-   Payment Button Handler
-   ============================================= */
-function initPaymentButtons() {
-    const chooseMedicationBtn = document.getElementById('chooseMedicationBtn');
-
-    if (chooseMedicationBtn) {
-        chooseMedicationBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            redirectToMedicationSelection();
-        });
-    }
-}
-
-function redirectToMedicationSelection() {
-    window.location.href = 'choose-medication.html';
 }
 
 /* =============================================

@@ -1,0 +1,60 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+  robots?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  ogType?: string;
+  keywords?: string;
+}
+
+const {
+  title,
+  description = 'Logan Health - GLP-1 weight loss treatments including Wegovy and Mounjaro. Book a consultation with our expert pharmacists in South East London.',
+  canonical,
+  robots,
+  ogTitle,
+  ogDescription,
+  ogImage,
+  ogType = 'website',
+  keywords,
+} = Astro.props;
+
+const siteName = 'Logan Health';
+const fullTitle = title === 'Home' ? siteName : `${title} | ${siteName}`;
+---
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{fullTitle}</title>
+<meta name="description" content={description}>
+{keywords && <meta name="keywords" content={keywords} />}
+{robots && <meta name="robots" content={robots} />}
+{canonical && <link rel="canonical" href={canonical} />}
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Styles -->
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/animations.css">
+
+<!-- Open Graph -->
+<meta property="og:title" content={ogTitle || title}>
+<meta property="og:description" content={ogDescription || description}>
+<meta property="og:type" content={ogType}>
+<meta property="og:site_name" content={siteName}>
+{ogImage && <meta property="og:image" content={ogImage} />}
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content={ogTitle || title}>
+<meta name="twitter:description" content={ogDescription || description}>

@@ -1,48 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Terms of Service for Logan Health GLP-1 weight loss services.">
-    <title>Terms of Service | Logan Health</title>
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
 
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://loganhealth.co.uk/terms.html">
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Terms of Service | Logan Health">
-    <meta property="og:description" content="Terms of Service for Logan Health GLP-1 weight loss services.">
-    <meta property="og:url" content="https://loganhealth.co.uk/terms.html">
-    <meta property="og:site_name" content="Logan Health">
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Styles -->
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/animations.css">
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar scrolled" id="navbar">
-        <div class="container nav-container">
-            <a href="index.html" class="nav-logo">
-                <span class="logo-icon">
-                    <!-- Heart with Pulse Icon -->
-                    <svg class="logo-svg active" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M16 28S4 20 4 12C4 7 8 4 12 4C14 4 15.5 5 16 6C16.5 5 18 4 20 4C24 4 28 7 28 12C28 20 16 28 16 28Z" fill="currentColor"/>
-                        <path d="M6 16H10L12 12L14 20L16 14L18 18L20 16H26" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </span>
-                <span class="logo-text">Logan <span class="logo-highlight">Health</span></span>
-            </a>
-            <a href="index.html" class="btn btn-outline">Back to Home</a>
-        </div>
-    </nav>
-
+<BaseLayout
+  title="Terms and Conditions"
+  description="Terms of Service for Logan Health GLP-1 weight loss services."
+  canonical="https://loganhealth.co.uk/terms"
+>
     <!-- Main Content -->
     <main class="legal-page">
         <div class="container">
@@ -220,19 +184,4 @@
             </div>
         </div>
     </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-bottom" style="border-top: none; padding-top: 0;">
-                <p>&copy; 2025 Logan Health. All rights reserved.</p>
-                <div class="footer-legal">
-                    <a href="privacy.html">Privacy Policy</a>
-                    <a href="terms.html">Terms of Service</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-</body>
-</html>
+</BaseLayout>

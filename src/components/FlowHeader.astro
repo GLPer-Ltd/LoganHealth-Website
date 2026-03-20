@@ -1,0 +1,39 @@
+---
+interface Props {
+  backUrl?: string;
+  backText?: string;
+}
+
+const { backUrl = '/', backText = 'Back to Homepage' } = Astro.props;
+---
+
+<header class="booking-header">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+        <a href="/" class="nav-logo" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+            <span style="color: var(--color-primary);">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 28S4 20 4 12C4 7 8 4 12 4C14 4 15.5 5 16 6C16.5 5 18 4 20 4C24 4 28 7 28 12C28 20 16 28 16 28Z" fill="currentColor"/>
+                    <path d="M6 16H10L12 12L14 20L16 14L18 18L20 16H26" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span class="logo-text">Logan <span class="logo-highlight">Health</span></span>
+        </a>
+        <a href={backUrl} style="display: flex; align-items: center; gap: 0.5rem; color: var(--color-text-light); text-decoration: none; font-size: var(--font-size-sm);">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 10H5M5 10L10 5M5 10L10 15"/>
+            </svg>
+            <span>{backText}</span>
+        </a>
+    </div>
+</header>
+
+<style>
+    .booking-header {
+        background: var(--color-white);
+        padding: var(--spacing-4) var(--spacing-6);
+        box-shadow: var(--shadow-sm);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+</style>
