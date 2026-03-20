@@ -20,20 +20,29 @@ import FlowLayout from '../layouts/FlowLayout.astro';
         /* Hero banner */
         .booking-hero {
             background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-            padding: var(--spacing-6) var(--spacing-4);
-            text-align: center;
+            padding: var(--spacing-4) var(--spacing-6);
             color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-6);
+            flex-wrap: wrap;
+        }
+
+        .booking-hero-text {
+            display: flex;
+            flex-direction: column;
         }
 
         .booking-hero h1 {
-            font-size: var(--font-size-2xl);
+            font-size: var(--font-size-xl);
             font-weight: 700;
             color: white;
-            margin: 0 0 var(--spacing-1) 0;
+            margin: 0;
         }
 
         .booking-hero p {
-            font-size: var(--font-size-base);
+            font-size: var(--font-size-sm);
             opacity: 0.9;
             margin: 0;
         }
@@ -41,29 +50,27 @@ import FlowLayout from '../layouts/FlowLayout.astro';
         .booking-hero .trust-badges {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: var(--spacing-6);
-            margin-top: var(--spacing-4);
-            opacity: 0.85;
-            font-size: var(--font-size-sm);
+            gap: var(--spacing-5);
+            opacity: 0.8;
+            font-size: var(--font-size-xs);
         }
 
         .booking-hero .trust-badge {
             display: flex;
             align-items: center;
-            gap: var(--spacing-2);
+            gap: var(--spacing-1);
         }
 
         .booking-hero .trust-badge svg {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             flex-shrink: 0;
         }
 
         /* Main content */
         .booking-main {
             flex: 1;
-            padding: var(--spacing-8) var(--spacing-4);
+            padding: var(--spacing-4) var(--spacing-4);
             max-width: 1000px;
             margin: 0 auto;
             width: 100%;
