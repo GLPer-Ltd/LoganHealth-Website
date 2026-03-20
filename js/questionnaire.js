@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
    ============================================= */
 const questionnaireState = {
     currentStep: 1,
-    totalSteps: 11,
+    totalSteps: 10,
     data: {
         // Step 1 (new - Motivation & Goals)
         weightLossReason: null,
@@ -66,16 +66,7 @@ const questionnaireState = {
         contraceptionAgreement: null,
 
         // Step 10 (important info)
-        importantInfoConfirmed: false,
-
-        // Step 11: Contact
-        fullName: '',
-        email: '',
-        phone: '',
-        contactMethod: 'email',
-        consent: false,
-        marketing: false,
-        termsAgreement: false
+        importantInfoConfirmed: false
     },
     eligible: null,
     eligibilityReason: ''
@@ -603,42 +594,6 @@ function validateCurrentStep() {
             }
             break;
 
-        case 11:
-            // Contact details
-            const name = document.getElementById('fullName').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const consent = document.getElementById('consent').checked;
-            const terms = document.getElementById('termsAgreement').checked;
-
-            if (!name || name.length < 2) {
-                markError('fullName');
-                errorMessage = 'Please enter your full name';
-                isValid = false;
-            }
-
-            if (!email || !window.utils.isValidEmail(email)) {
-                markError('email');
-                errorMessage = 'Please enter a valid email address';
-                isValid = false;
-            }
-
-            if (!phone || !window.utils.isValidUKPhone(phone)) {
-                markError('phone');
-                errorMessage = 'Please enter a valid UK phone number';
-                isValid = false;
-            }
-
-            if (!terms) {
-                errorMessage = 'Please agree to the Terms and Conditions and Privacy Policy';
-                isValid = false;
-            }
-
-            if (!consent) {
-                errorMessage = 'Please agree to the data processing terms';
-                isValid = false;
-            }
-            break;
     }
 
     if (!isValid && errorMessage) {
@@ -790,19 +745,6 @@ function saveStepData() {
             data.importantInfoConfirmed = document.getElementById('importantInfoConfirmed').checked;
             break;
 
-        case 11:
-            // Contact Details
-            data.fullName = document.getElementById('fullName').value.trim();
-            data.email = document.getElementById('email').value.trim();
-            data.phone = document.getElementById('phone').value.trim();
-
-            const contactMethod = document.querySelector('input[name="contactMethod"]:checked');
-            data.contactMethod = contactMethod ? contactMethod.value : 'email';
-
-            data.consent = document.getElementById('consent').checked;
-            data.termsAgreement = document.getElementById('termsAgreement').checked;
-            data.marketing = document.getElementById('marketing').checked;
-            break;
     }
 }
 
@@ -823,8 +765,16 @@ function submitQuestionnaire(e) {
     questionnaireState.eligible = eligibility.eligible;
     questionnaireState.eligibilityReason = eligibility.reason;
 
-    // Submit to Formspree
-    submitToFormspree();
+    // Store questionnaire data in sessionStorage for later use
+    try {
+        sessionStorage.setItem('lh_questionnaire', JSON.stringify({
+            data: questionnaireState.data,
+            eligible: questionnaireState.eligible,
+            eligibilityReason: questionnaireState.eligibilityReason,
+        }));
+    } catch (e) {
+        console.warn('Could not store questionnaire data:', e);
+    }
 
     // Show results
     showResults();
@@ -938,34 +888,18 @@ function showResults() {
    Payment Button Handler
    ============================================= */
 function initPaymentButtons() {
-    const medicationBtns = document.querySelectorAll('.medication-btn');
+    const chooseMedicationBtn = document.getElementById('chooseMedicationBtn');
 
-    medicationBtns.forEach(function(btn) {
-        btn.addEventListener('click', function(e) {
+    if (chooseMedicationBtn) {
+        chooseMedicationBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            const product = btn.getAttribute('data-product');
-            if (product) {
-                redirectToPayment(product);
-            }
+            redirectToMedicationSelection();
         });
-    });
+    }
 }
 
-function redirectToPayment(product) {
-    const userData = questionnaireState.data;
-    const params = new URLSearchParams();
-
-    if (userData.fullName) {
-        params.set('name', userData.fullName.trim());
-    }
-    if (userData.email) {
-        params.set('email', userData.email.trim());
-    }
-    if (product) {
-        params.set('product', product);
-    }
-
-    window.location.href = `payment.html?${params.toString()}`;
+function redirectToMedicationSelection() {
+    window.location.href = 'choose-medication.html';
 }
 
 /* =============================================

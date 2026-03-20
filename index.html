@@ -1988,60 +1988,6 @@
                             </div>
                         </div>
 
-                        <!-- Step 11: Contact Information -->
-                        <div class="form-step" data-step="11">
-                            <h3 class="step-heading">Your Contact Details</h3>
-
-                            <div class="form-group">
-                                <label class="form-label" for="fullName">Full Name</label>
-                                <input type="text" id="fullName" name="fullName" class="form-input" placeholder="John Smith" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="email">Email Address</label>
-                                <input type="email" id="email" name="email" class="form-input" placeholder="john@example.com" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="phone">Phone Number</label>
-                                <input type="tel" id="phone" name="phone" class="form-input" placeholder="07123 456789" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Preferred Contact Method</label>
-                                <div class="radio-group horizontal">
-                                    <label class="radio-option">
-                                        <input type="radio" name="contactMethod" value="email" checked>
-                                        <span class="radio-label">Email</span>
-                                    </label>
-                                    <label class="radio-option">
-                                        <input type="radio" name="contactMethod" value="phone">
-                                        <span class="radio-label">Phone</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="checkbox-option consent">
-                                    <input type="checkbox" name="consent" id="consent" required>
-                                    <span class="checkbox-label">I consent to Logan Health processing my personal data for the purpose of this health assessment and potential GLP-1 treatment. I understand my data will be handled in accordance with GDPR.</span>
-                                </label>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="checkbox-option consent">
-                                    <input type="checkbox" name="termsAgreement" id="termsAgreement" required>
-                                    <span class="checkbox-label">I agree to Logan Health's <a href="/terms.html" target="_blank">Terms and Conditions</a> and <a href="/privacy.html" target="_blank">Privacy Policy</a>.</span>
-                                </label>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="checkbox-option consent">
-                                    <input type="checkbox" name="marketing" id="marketing">
-                                    <span class="checkbox-label">I would like to receive health tips and updates from Logan Health (optional)</span>
-                                </label>
-                            </div>
-                        </div>
 
                         <!-- Navigation Buttons -->
                         <div class="form-navigation">
@@ -2080,107 +2026,14 @@
                             <p class="result-message">Based on your responses, you may be eligible for GLP-1 treatment. Book a consultation with our pharmacist to discuss your personalised treatment plan.</p>
                             <p class="result-message result-note">Once you place your order you will receive a follow up email. You will be sent a calendar link to book a date and time for your meeting with one of our healthcare team. If, for any reason following that meeting, that this medication is not suitable for you, you will be refunded in full.</p>
 
-                            <!-- Medication Selection Section -->
+                            <!-- Continue to medication selection -->
                             <div class="payment-choice-section" id="paymentChoiceSection">
-                                <h4>Choose Your Medication</h4>
-                                <p>Select your treatment to proceed. Includes pharmacist consultation and first month's medication supply.</p>
-
-                                <div class="medication-options">
-                                    <!-- Wegovy -->
-                                    <div class="medication-card">
-                                        <div class="medication-badge">Popular Choice</div>
-                                        <img src="images/wegovy-pen.png" alt="Wegovy pen" class="medication-image">
-                                        <div class="medication-header">
-                                            <h5 class="medication-name">Wegovy</h5>
-                                            <p class="medication-ingredient">Semaglutide</p>
-                                        </div>
-                                        <div class="medication-price">
-                                            <span class="price-from">From</span>
-                                            <span class="price-amount">&pound;149</span>
-                                        </div>
-                                        <ul class="medication-features">
-                                            <li>
-                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                    <path d="M13.333 4L6 11.333L2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                </svg>
-                                                Up to 15% average weight loss
-                                            </li>
-                                            <li>
-                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                    <path d="M13.333 4L6 11.333L2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                </svg>
-                                                Weekly self-injection
-                                            </li>
-                                            <li>
-                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                    <path d="M13.333 4L6 11.333L2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                </svg>
-                                                Reduces appetite naturally
-                                            </li>
-                                            <li>
-                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                    <path d="M13.333 4L6 11.333L2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                </svg>
-                                                FDA &amp; MHRA approved
-                                            </li>
-                                        </ul>
-                                        <a href="#" class="btn btn-primary btn-block medication-btn" data-product="wegovy">
-                                            Select Wegovy
-                                        </a>
-                                    </div>
-
-                                    <!-- Mounjaro -->
-                                    <div class="medication-card featured">
-                                        <div class="medication-badge featured">Most Effective</div>
-                                        <img src="images/mounjaro-pen.png" alt="Mounjaro pen" class="medication-image">
-                                        <div class="medication-header">
-                                            <h5 class="medication-name">Mounjaro</h5>
-                                            <p class="medication-ingredient">Tirzepatide</p>
-                                        </div>
-                                        <div class="medication-price">
-                                            <span class="price-from">From</span>
-                                            <span class="price-amount">&pound;199</span>
-                                        </div>
-                                        <ul class="medication-features">
-                                            <li>
-                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                    <path d="M13.333 4L6 11.333L2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                </svg>
-                                                Up to 21% average weight loss
-                                            </li>
-                                            <li>
-                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                    <path d="M13.333 4L6 11.333L2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                </svg>
-                                                Weekly self-injection
-                                            </li>
-                                            <li>
-                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                    <path d="M13.333 4L6 11.333L2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                </svg>
-                                                Dual hormone action (GLP-1 + GIP)
-                                            </li>
-                                            <li>
-                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                    <path d="M13.333 4L6 11.333L2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                </svg>
-                                                Improved blood sugar control
-                                            </li>
-                                        </ul>
-                                        <a href="#" class="btn btn-secondary btn-block medication-btn" data-product="mounjaro">
-                                            Select Mounjaro
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <p class="payment-note">
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                        <path d="M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z" stroke="currentColor" stroke-width="1.5"/>
-                                        <path d="M8 5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                        <circle cx="8" cy="11" r="0.75" fill="currentColor"/>
+                                <a href="#" class="btn btn-primary btn-block" id="chooseMedicationBtn" style="max-width: 360px; margin: var(--spacing-6) auto 0;">
+                                    Choose Your Medication
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="margin-left: 8px; vertical-align: middle;">
+                                        <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
-                                    After payment, you'll receive an email with a link to book your consultation.
-                                </p>
+                                </a>
                             </div>
                         </div>
 
@@ -2475,7 +2328,6 @@
     <script src="js/main.js"></script>
     <script src="js/gsap-animations.js"></script>
     <script src="js/questionnaire.js"></script>
-    <script src="js/formHandler.js"></script>
 
 </body>
 </html>

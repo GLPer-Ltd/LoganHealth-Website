@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Choose your GLP-1 medication - Logan Health">
+    <title>Choose Your Medication | Logan Health</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .choose-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .choose-header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            padding: var(--spacing-6) var(--spacing-4);
+            text-align: center;
+        }
+
+        .choose-header .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-2);
+            color: white;
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .choose-header .logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .choose-content {
+            flex: 1;
+            padding: var(--spacing-10) var(--spacing-4);
+            max-width: 880px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .choose-title {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            color: var(--color-text);
+            text-align: center;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .choose-subtitle {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-light);
+            text-align: center;
+            margin-bottom: var(--spacing-8);
+            line-height: 1.6;
+        }
+
+        .medication-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-6);
+            margin-bottom: var(--spacing-8);
+        }
+
+        @media (max-width: 768px) {
+            .medication-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .med-card {
+            background: var(--color-white);
+            border: 3px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-6);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .med-card:hover {
+            border-color: var(--color-primary-light);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .med-card.selected {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15), var(--shadow-lg);
+        }
+
+        .med-card-check {
+            position: absolute;
+            top: var(--spacing-4);
+            left: var(--spacing-4);
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--color-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-white);
+            transition: all 0.2s ease;
+        }
+
+        .med-card.selected .med-card-check {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        .med-card-check svg {
+            width: 14px;
+            height: 14px;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .med-card.selected .med-card-check svg {
+            opacity: 1;
+        }
+
+        .med-card-badge {
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            padding: var(--spacing-1) var(--spacing-3);
+            border-radius: var(--radius-full);
+            background: var(--color-primary);
+            color: var(--color-white);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: absolute;
+            top: var(--spacing-4);
+            right: var(--spacing-4);
+        }
+
+        .med-card-badge.secondary {
+            background: var(--color-secondary);
+        }
+
+        .med-card-image {
+            width: 100%;
+            max-height: 180px;
+            object-fit: contain;
+            margin: var(--spacing-4) 0;
+        }
+
+        .med-card-name {
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            color: var(--color-text);
+            margin: 0;
+        }
+
+        .med-card-ingredient {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-light);
+            margin: 0 0 var(--spacing-3) 0;
+        }
+
+        .med-card-price {
+            display: flex;
+            align-items: baseline;
+            gap: var(--spacing-1);
+            margin-bottom: var(--spacing-4);
+            padding-bottom: var(--spacing-4);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .med-card-price .price-from {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-light);
+        }
+
+        .med-card-price .price-amount {
+            font-size: var(--font-size-3xl);
+            font-weight: 800;
+            color: var(--color-primary);
+        }
+
+        .med-card-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex: 1;
+        }
+
+        .med-card-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-2);
+            font-size: var(--font-size-sm);
+            color: var(--color-text);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .med-card-features li svg {
+            flex-shrink: 0;
+            color: var(--color-success);
+            margin-top: 2px;
+        }
+
+        .med-card-features li:last-child {
+            margin-bottom: 0;
+        }
+
+        .continue-section {
+            text-align: center;
+        }
+
+        #continueBtn {
+            min-width: 280px;
+            padding: var(--spacing-4) var(--spacing-8);
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+            opacity: 0.5;
+            cursor: not-allowed;
+            transition: all 0.2s ease;
+        }
+
+        #continueBtn.active {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        #continueBtn.active:hover {
+            transform: translateY(-1px);
+        }
+
+        .choose-note {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: var(--spacing-2);
+            margin-top: var(--spacing-4);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-light);
+        }
+
+        .choose-note svg {
+            flex-shrink: 0;
+            width: 16px;
+            height: 16px;
+            color: var(--color-primary);
+            margin-top: 2px;
+        }
+
+        .contact-section {
+            background: var(--color-white);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-8);
+            margin-bottom: var(--spacing-8);
+        }
+
+        .contact-title {
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            color: var(--color-text);
+            margin: 0 0 var(--spacing-6) 0;
+        }
+
+        .form-row {
+            margin-bottom: var(--spacing-4);
+        }
+
+        .form-row.two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-4);
+        }
+
+        @media (max-width: 640px) {
+            .form-row.two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .form-input {
+            padding: var(--spacing-3) var(--spacing-4);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            font-family: var(--font-family);
+            font-size: var(--font-size-base);
+            color: var(--color-text);
+            transition: border-color var(--transition-base);
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+        }
+
+        .consent-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-3);
+            margin-top: var(--spacing-4);
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-3);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-light);
+            cursor: pointer;
+            line-height: 1.5;
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .checkbox-option a {
+            color: var(--color-primary);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-2);
+            margin-top: var(--spacing-8);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-light);
+            text-decoration: none;
+            transition: color var(--transition-base);
+        }
+
+        .back-link:hover {
+            color: var(--color-primary);
+        }
+
+        .back-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        #missing-info {
+            display: none;
+            text-align: center;
+            max-width: 480px;
+            margin: var(--spacing-10) auto;
+            background: var(--color-white);
+            border-radius: var(--radius-2xl);
+            padding: var(--spacing-10);
+            box-shadow: var(--shadow-xl);
+        }
+
+        #missing-info.visible {
+            display: block;
+        }
+
+        .missing-info-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto var(--spacing-4);
+            background: var(--color-error-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-error);
+        }
+
+        .missing-info-icon svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        @media (max-width: 640px) {
+            .choose-content {
+                padding: var(--spacing-6) var(--spacing-4);
+            }
+
+            .choose-title {
+                font-size: var(--font-size-2xl);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="choose-page">
+        <!-- Header -->
+        <header class="choose-header">
+            <a href="index.html" class="logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 28S4 20 4 12C4 7 8 4 12 4C14 4 15.5 5 16 6C16.5 5 18 4 20 4C24 4 28 7 28 12C28 20 16 28 16 28Z" fill="currentColor"/>
+                    <path d="M6 16H10L12 12L14 20L16 14L18 18L20 16H26" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Logan <span style="opacity: 0.9;">Health</span>
+            </a>
+        </header>
+
+        <!-- Missing info error -->
+        <div id="missing-info">
+            <div class="missing-info-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+            </div>
+            <h2 style="font-size: var(--font-size-xl); font-weight: 700; margin-bottom: var(--spacing-2);">Questionnaire Required</h2>
+            <p style="color: var(--color-text-light); margin-bottom: var(--spacing-6);">Please complete the eligibility questionnaire before choosing a medication.</p>
+            <a href="index.html#questionnaire" class="btn btn-primary" style="width: 100%;">Go to Questionnaire</a>
+        </div>
+
+        <!-- Main content -->
+        <main class="choose-content" id="choose-content">
+            <h1 class="choose-title">Choose Your Medication</h1>
+            <p class="choose-subtitle">Select your preferred treatment. Includes pharmacist consultation and first month's medication supply.</p>
+
+            <div class="medication-grid">
+                <!-- Wegovy -->
+                <div class="med-card" data-product="wegovy">
+                    <div class="med-card-check">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <span class="med-card-badge">Popular Choice</span>
+                    <img src="images/wegovy-pen.png" alt="Wegovy pen" class="med-card-image">
+                    <h2 class="med-card-name">Wegovy</h2>
+                    <p class="med-card-ingredient">Semaglutide</p>
+                    <div class="med-card-price">
+                        <span class="price-from">From</span>
+                        <span class="price-amount">&pound;149</span>
+                    </div>
+                    <ul class="med-card-features">
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.333 4L6 11.333L2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Up to 15% average weight loss
+                        </li>
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.333 4L6 11.333L2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Weekly self-injection
+                        </li>
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.333 4L6 11.333L2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Reduces appetite naturally
+                        </li>
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.333 4L6 11.333L2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            FDA &amp; MHRA approved
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Mounjaro -->
+                <div class="med-card" data-product="mounjaro">
+                    <div class="med-card-check">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <span class="med-card-badge secondary">Most Effective</span>
+                    <img src="images/mounjaro-pen.png" alt="Mounjaro pen" class="med-card-image">
+                    <h2 class="med-card-name">Mounjaro</h2>
+                    <p class="med-card-ingredient">Tirzepatide</p>
+                    <div class="med-card-price">
+                        <span class="price-from">From</span>
+                        <span class="price-amount">&pound;199</span>
+                    </div>
+                    <ul class="med-card-features">
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.333 4L6 11.333L2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Up to 21% average weight loss
+                        </li>
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.333 4L6 11.333L2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Weekly self-injection
+                        </li>
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.333 4L6 11.333L2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Dual hormone action (GLP-1 + GIP)
+                        </li>
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.333 4L6 11.333L2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Improved blood sugar control
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Contact Details -->
+            <div class="contact-section">
+                <h2 class="contact-title">Your Details</h2>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="fullName">Full Name</label>
+                        <input type="text" id="fullName" class="form-input" placeholder="John Smith" required>
+                    </div>
+                </div>
+
+                <div class="form-row two-col">
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input type="email" id="email" class="form-input" placeholder="john@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="phone">Phone Number</label>
+                        <input type="tel" id="phone" class="form-input" placeholder="07123 456789" required>
+                    </div>
+                </div>
+
+                <div class="consent-group">
+                    <label class="checkbox-option">
+                        <input type="checkbox" id="consent">
+                        <span>I consent to Logan Health processing my personal data for the purpose of this health assessment and potential GLP-1 treatment. I understand my data will be handled in accordance with GDPR.</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" id="termsAgreement">
+                        <span>I agree to Logan Health's <a href="terms.html" target="_blank">Terms and Conditions</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>.</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" id="marketing">
+                        <span>I would like to receive health tips and updates from Logan Health (optional)</span>
+                    </label>
+                </div>
+            </div>
+
+            <div id="form-error" style="display: none; color: var(--color-error); background: var(--color-error-light); padding: var(--spacing-3) var(--spacing-4); border-radius: var(--radius-lg); font-size: var(--font-size-sm); margin-bottom: var(--spacing-4); text-align: center;"></div>
+
+            <div class="continue-section">
+                <button class="btn btn-primary" id="continueBtn" disabled>
+                    Continue to Payment
+                </button>
+
+                <div class="choose-note">
+                    <svg viewBox="0 0 16 16" fill="none">
+                        <path d="M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M8 5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <circle cx="8" cy="11" r="0.75" fill="currentColor"/>
+                    </svg>
+                    <span>After payment, you'll be taken directly to book your consultation.</span>
+                </div>
+
+                <a href="index.html" class="back-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"/>
+                        <polyline points="12,19 5,12 12,5"/>
+                    </svg>
+                    Back to homepage
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <script>
+    (function() {
+        'use strict';
+
+        // Check for questionnaire data in sessionStorage
+        var stored = null;
+        try { stored = JSON.parse(sessionStorage.getItem('lh_questionnaire')); } catch (e) {}
+
+        if (!stored || !stored.eligible) {
+            document.getElementById('choose-content').style.display = 'none';
+            document.getElementById('missing-info').classList.add('visible');
+            return;
+        }
+
+        var selectedProduct = null;
+        var cards = document.querySelectorAll('.med-card');
+        var continueBtn = document.getElementById('continueBtn');
+        var formError = document.getElementById('form-error');
+
+        // Card selection
+        cards.forEach(function(card) {
+            card.addEventListener('click', function() {
+                cards.forEach(function(c) { c.classList.remove('selected'); });
+                card.classList.add('selected');
+                selectedProduct = card.getAttribute('data-product');
+                checkFormReady();
+            });
+        });
+
+        // Enable button when medication selected + required fields filled
+        var nameInput = document.getElementById('fullName');
+        var emailInput = document.getElementById('email');
+        var phoneInput = document.getElementById('phone');
+        var consentCheck = document.getElementById('consent');
+        var termsCheck = document.getElementById('termsAgreement');
+
+        [nameInput, emailInput, phoneInput].forEach(function(input) {
+            input.addEventListener('input', checkFormReady);
+        });
+        [consentCheck, termsCheck].forEach(function(check) {
+            check.addEventListener('change', checkFormReady);
+        });
+
+        function checkFormReady() {
+            var ready = selectedProduct &&
+                nameInput.value.trim().length >= 2 &&
+                emailInput.value.trim().length > 0 &&
+                phoneInput.value.trim().length > 0 &&
+                consentCheck.checked &&
+                termsCheck.checked;
+
+            continueBtn.disabled = !ready;
+            if (ready) {
+                continueBtn.classList.add('active');
+            } else {
+                continueBtn.classList.remove('active');
+            }
+        }
+
+        function showError(msg) {
+            formError.textContent = msg;
+            formError.style.display = 'block';
+        }
+
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function isValidUKPhone(phone) {
+            var cleaned = phone.replace(/[\s\-()]/g, '');
+            return /^(0|\+44)[0-9]{10,11}$/.test(cleaned);
+        }
+
+        // Continue button
+        continueBtn.addEventListener('click', function() {
+            formError.style.display = 'none';
+
+            var name = nameInput.value.trim();
+            var email = emailInput.value.trim();
+            var phone = phoneInput.value.trim();
+
+            if (!name || name.length < 2) { showError('Please enter your full name.'); return; }
+            if (!isValidEmail(email)) { showError('Please enter a valid email address.'); return; }
+            if (!isValidUKPhone(phone)) { showError('Please enter a valid UK phone number.'); return; }
+            if (!consentCheck.checked) { showError('Please agree to the data processing terms.'); return; }
+            if (!termsCheck.checked) { showError('Please agree to the Terms and Conditions.'); return; }
+            if (!selectedProduct) { showError('Please select a medication.'); return; }
+
+            // Store checkout data in sessionStorage (avoids PII in URLs)
+            var checkoutData = {
+                name: name,
+                email: email,
+                phone: phone,
+                product: selectedProduct,
+                marketing: document.getElementById('marketing').checked,
+                questionnaireData: stored.data,
+                eligible: stored.eligible,
+                eligibilityReason: stored.eligibilityReason,
+            };
+
+            try {
+                sessionStorage.setItem('lh_checkout', JSON.stringify(checkoutData));
+            } catch (e) {
+                showError('Unable to save your details. Please try again.');
+                return;
+            }
+
+            window.location.href = 'payment.html';
+        });
+    })();
+    </script>
+</body>
+</html>

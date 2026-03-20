@@ -1,31 +1,20 @@
 /**
- * Payment page — redirects to provider-hosted checkout
- * Reads name, email, product from URL params, calls Worker to create checkout session
+ * Payment page — reads checkout data from sessionStorage, calls Worker, redirects to provider checkout
  */
 (function() {
     'use strict';
 
-    const WORKER_URL = 'https://loganhealth-payments.misty-heart-ac54.workers.dev';
+    var WORKER_URL = 'https://loganhealth-payments.misty-heart-ac54.workers.dev';
 
-    const PRODUCT_NAMES = {
+    var PRODUCT_NAMES = {
         wegovy: 'Wegovy (Semaglutide)',
         mounjaro: 'Mounjaro (Tirzepatide)',
     };
 
-    const PRODUCT_PRICES = {
+    var PRODUCT_PRICES = {
         wegovy: '£149',
         mounjaro: '£199',
     };
-
-    function getQueryParams() {
-        var params = new URLSearchParams(window.location.search);
-        return {
-            name: params.get('name'),
-            email: params.get('email'),
-            product: params.get('product'),
-            cancelled: params.get('cancelled'),
-        };
-    }
 
     function showError(message) {
         var errorEl = document.getElementById('payment-error');
@@ -38,35 +27,37 @@
     }
 
     async function init() {
-        var params = getQueryParams();
-        var name = params.name;
-        var email = params.email;
-        var product = params.product;
-
         var missingInfo = document.getElementById('missing-info');
         var paymentContent = document.getElementById('payment-content');
 
-        // Show cancelled state if returning from cancelled checkout
-        if (params.cancelled) {
+        // Check for cancelled return from provider
+        var urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('cancelled')) {
             showError('Payment was cancelled. You can return to the questionnaire to try again.');
             var retryBtn = document.getElementById('retry-button');
             if (retryBtn) retryBtn.style.display = 'inline-flex';
             return;
         }
 
-        // Show missing info state if required params absent
-        if (!name || !email || !product || !PRODUCT_NAMES[product]) {
+        // Read checkout data from sessionStorage
+        var checkoutData = null;
+        try { checkoutData = JSON.parse(sessionStorage.getItem('lh_checkout')); } catch (e) {}
+
+        if (!checkoutData || !checkoutData.name || !checkoutData.email || !checkoutData.product) {
             if (paymentContent) paymentContent.style.display = 'none';
             if (missingInfo) missingInfo.style.display = 'block';
             return;
         }
 
+        var name = checkoutData.name;
+        var product = checkoutData.product;
+
         // Populate product details
         var productNameEl = document.getElementById('product-name');
         var productPriceEl = document.getElementById('product-price');
         var customerNameEl = document.getElementById('customer-name');
-        if (productNameEl) productNameEl.textContent = PRODUCT_NAMES[product];
-        if (productPriceEl) productPriceEl.textContent = PRODUCT_PRICES[product];
+        if (productNameEl) productNameEl.textContent = PRODUCT_NAMES[product] || product;
+        if (productPriceEl) productPriceEl.textContent = PRODUCT_PRICES[product] || '';
         if (customerNameEl) customerNameEl.textContent = name;
 
         // Create checkout session and redirect
@@ -74,7 +65,16 @@
             var response = await fetch(WORKER_URL + '/api/create-checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name: name, email: email, product: product }),
+                body: JSON.stringify({
+                    name: checkoutData.name,
+                    email: checkoutData.email,
+                    phone: checkoutData.phone,
+                    product: checkoutData.product,
+                    questionnaireData: checkoutData.questionnaireData,
+                    eligible: checkoutData.eligible,
+                    eligibilityReason: checkoutData.eligibilityReason,
+                    marketing: checkoutData.marketing,
+                }),
             });
 
             var data = await response.json();
