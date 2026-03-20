@@ -3491,7 +3491,7 @@ a.blog-card {
     flex-wrap: wrap;
     gap: var(--spacing-3);
     margin-top: var(--spacing-6);
-    margin-bottom: var(--spacing-8);
+    margin-bottom: var(--spacing-4);
 }
 
 .tdee-hero-benefit {
