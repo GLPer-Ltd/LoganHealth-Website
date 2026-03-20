@@ -1651,7 +1651,7 @@ h1, h2, h3, h4, h5, h6 {
     text-align: center;
 }
 
-.payment-options {
+.medication-options {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-6);
@@ -1659,75 +1659,101 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 768px) {
-    .payment-options {
+    .medication-options {
         grid-template-columns: 1fr;
     }
 }
 
-.payment-option {
+.medication-card {
     background: var(--color-white);
     border: 2px solid var(--color-border);
     border-radius: var(--radius-xl);
     padding: var(--spacing-6);
     transition: all var(--transition-base);
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
-.payment-option:hover {
+.medication-card:hover {
     border-color: var(--color-primary-light);
     box-shadow: var(--shadow-md);
 }
 
-.payment-option.featured {
-    border-color: var(--color-primary);
-    background: linear-gradient(to bottom, var(--color-primary-50), var(--color-white));
-    position: relative;
+.medication-card.featured {
+    border-color: var(--color-secondary);
 }
 
-.payment-option-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: var(--spacing-3);
-    flex-wrap: wrap;
-    gap: var(--spacing-2);
-}
-
-.payment-option-header h5 {
-    font-size: var(--font-size-lg);
+.medication-badge {
+    font-size: var(--font-size-xs);
     font-weight: 600;
+    padding: var(--spacing-1) var(--spacing-3);
+    border-radius: var(--radius-full);
+    background: var(--color-primary);
+    color: var(--color-white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: absolute;
+    top: var(--spacing-4);
+    right: var(--spacing-4);
+}
+
+.medication-badge.featured {
+    background: var(--color-secondary);
+}
+
+.medication-image {
+    width: 100%;
+    max-height: 180px;
+    object-fit: contain;
+    margin-bottom: var(--spacing-4);
+}
+
+.medication-header {
+    margin-bottom: var(--spacing-2);
+}
+
+.medication-name {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
     color: var(--color-text);
     margin: 0;
 }
 
-.payment-badge {
-    font-size: var(--font-size-xs);
-    font-weight: 600;
-    padding: var(--spacing-1) var(--spacing-2);
-    border-radius: var(--radius-full);
-    background: var(--color-bg-alt);
-    color: var(--color-text-light);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.payment-badge.popular {
-    background: var(--color-secondary);
-    color: var(--color-white);
-}
-
-.payment-description {
-    color: var(--color-text-light);
+.medication-ingredient {
     font-size: var(--font-size-sm);
-    margin-bottom: var(--spacing-4);
+    color: var(--color-text-light);
+    margin: 0;
 }
 
-.payment-features {
+.medication-price {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-1);
+    margin-bottom: var(--spacing-4);
+    padding-bottom: var(--spacing-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.medication-price .price-from {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-light);
+}
+
+.medication-price .price-amount {
+    font-size: var(--font-size-3xl);
+    font-weight: 800;
+    color: var(--color-primary);
+}
+
+.medication-features {
     list-style: none;
     padding: 0;
     margin: 0 0 var(--spacing-6) 0;
+    flex: 1;
 }
 
-.payment-features li {
+.medication-features li {
     display: flex;
     align-items: flex-start;
     gap: var(--spacing-2);
@@ -1736,13 +1762,13 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: var(--spacing-2);
 }
 
-.payment-features li svg {
+.medication-features li svg {
     flex-shrink: 0;
     color: var(--color-success);
     margin-top: 2px;
 }
 
-.payment-features li:last-child {
+.medication-features li:last-child {
     margin-bottom: 0;
 }
 
@@ -1752,7 +1778,7 @@ h1, h2, h3, h4, h5, h6 {
     text-align: center;
 }
 
-.payment-btn {
+.medication-btn {
     margin-top: auto;
 }
 

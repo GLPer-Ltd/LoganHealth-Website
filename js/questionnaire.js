@@ -938,26 +938,20 @@ function showResults() {
    Payment Button Handler
    ============================================= */
 function initPaymentButtons() {
-    const oneOffBtn = document.getElementById('oneOffPaymentBtn');
-    const subscriptionBtn = document.getElementById('subscriptionPaymentBtn');
+    const medicationBtns = document.querySelectorAll('.medication-btn');
 
-    // Both buttons go to the same payment page (single price)
-    if (oneOffBtn) {
-        oneOffBtn.addEventListener('click', function(e) {
+    medicationBtns.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
             e.preventDefault();
-            redirectToPayment();
+            const product = btn.getAttribute('data-product');
+            if (product) {
+                redirectToPayment(product);
+            }
         });
-    }
-
-    if (subscriptionBtn) {
-        subscriptionBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            redirectToPayment();
-        });
-    }
+    });
 }
 
-function redirectToPayment() {
+function redirectToPayment(product) {
     const userData = questionnaireState.data;
     const params = new URLSearchParams();
 
@@ -966,6 +960,9 @@ function redirectToPayment() {
     }
     if (userData.email) {
         params.set('email', userData.email.trim());
+    }
+    if (product) {
+        params.set('product', product);
     }
 
     window.location.href = `payment.html?${params.toString()}`;

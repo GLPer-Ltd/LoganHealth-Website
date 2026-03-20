@@ -1,202 +1,97 @@
 /**
- * Payment page - Stripe integration
- * Handles card payment via Stripe Elements and the payments Worker
+ * Payment page — redirects to provider-hosted checkout
+ * Reads name, email, product from URL params, calls Worker to create checkout session
  */
-
 (function() {
     'use strict';
 
-    // Configuration
     const WORKER_URL = 'https://loganhealth-payments.misty-heart-ac54.workers.dev';
-    const STRIPE_PUBLISHABLE_KEY = 'pk_test_XXXXX'; // Replace with real key
 
-    // DOM Elements
-    const paymentForm = document.getElementById('payment-form');
-    const missingInfo = document.getElementById('missing-info');
-    const customerNameEl = document.getElementById('customer-name');
-    const customerEmailEl = document.getElementById('customer-email');
-    const cardErrors = document.getElementById('card-errors');
-    const payButton = document.getElementById('pay-button');
-    const paymentLoading = document.getElementById('payment-loading');
+    const PRODUCT_NAMES = {
+        wegovy: 'Wegovy (Semaglutide)',
+        mounjaro: 'Mounjaro (Tirzepatide)',
+    };
 
-    /**
-     * Read query parameters from the URL
-     */
+    const PRODUCT_PRICES = {
+        wegovy: '£149',
+        mounjaro: '£199',
+    };
+
     function getQueryParams() {
-        const params = new URLSearchParams(window.location.search);
+        var params = new URLSearchParams(window.location.search);
         return {
             name: params.get('name'),
             email: params.get('email'),
+            product: params.get('product'),
+            cancelled: params.get('cancelled'),
         };
     }
 
-    /**
-     * Show a card validation or payment error
-     */
     function showError(message) {
-        cardErrors.textContent = message;
-        cardErrors.classList.add('visible');
-    }
-
-    /**
-     * Hide the card error message
-     */
-    function hideError() {
-        cardErrors.textContent = '';
-        cardErrors.classList.remove('visible');
-    }
-
-    /**
-     * Set the pay button to its processing state
-     */
-    function setProcessing(processing) {
-        if (processing) {
-            payButton.disabled = true;
-            payButton.textContent = 'Processing\u2026';
-            paymentLoading.classList.add('visible');
-        } else {
-            payButton.disabled = false;
-            payButton.textContent = payButton.getAttribute('data-label');
-            paymentLoading.classList.remove('visible');
+        var errorEl = document.getElementById('payment-error');
+        var loadingEl = document.getElementById('payment-loading');
+        if (loadingEl) loadingEl.style.display = 'none';
+        if (errorEl) {
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
         }
     }
 
-    /**
-     * Main initialisation
-     */
-    function init() {
-        var _a = getQueryParams(), name = _a.name, email = _a.email;
+    async function init() {
+        var params = getQueryParams();
+        var name = params.name;
+        var email = params.email;
+        var product = params.product;
 
-        // If name or email is missing, show the error state
-        if (!name || !email) {
-            paymentForm.classList.add('hidden');
-            missingInfo.classList.add('visible');
+        var missingInfo = document.getElementById('missing-info');
+        var paymentContent = document.getElementById('payment-content');
+
+        // Show cancelled state if returning from cancelled checkout
+        if (params.cancelled) {
+            showError('Payment was cancelled. You can return to the questionnaire to try again.');
+            var retryBtn = document.getElementById('retry-button');
+            if (retryBtn) retryBtn.style.display = 'inline-flex';
             return;
         }
 
-        // Populate customer details
-        customerNameEl.textContent = name;
-        customerEmailEl.textContent = email;
+        // Show missing info state if required params absent
+        if (!name || !email || !product || !PRODUCT_NAMES[product]) {
+            if (paymentContent) paymentContent.style.display = 'none';
+            if (missingInfo) missingInfo.style.display = 'block';
+            return;
+        }
 
-        // Initialise Stripe
-        var stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
-        var elements = stripe.elements({
-            fonts: [
-                { cssSrc: 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap' }
-            ],
-        });
+        // Populate product details
+        var productNameEl = document.getElementById('product-name');
+        var productPriceEl = document.getElementById('product-price');
+        var customerNameEl = document.getElementById('customer-name');
+        if (productNameEl) productNameEl.textContent = PRODUCT_NAMES[product];
+        if (productPriceEl) productPriceEl.textContent = PRODUCT_PRICES[product];
+        if (customerNameEl) customerNameEl.textContent = name;
 
-        var cardElement = elements.create('card', {
-            style: {
-                base: {
-                    fontFamily: "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-                    fontSize: '16px',
-                    color: '#1F2937',
-                    '::placeholder': {
-                        color: '#9CA3AF',
-                    },
-                },
-                invalid: {
-                    color: '#EF4444',
-                    iconColor: '#EF4444',
-                },
-            },
-        });
+        // Create checkout session and redirect
+        try {
+            var response = await fetch(WORKER_URL + '/api/create-checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: name, email: email, product: product }),
+            });
 
-        cardElement.mount('#card-element');
+            var data = await response.json();
 
-        // Listen for card validation errors
-        cardElement.on('change', function(event) {
-            if (event.error) {
-                showError(event.error.message);
-            } else {
-                hideError();
+            if (!response.ok || !data.checkoutUrl) {
+                showError(data.error || 'Unable to start checkout. Please try again.');
+                return;
             }
-        });
 
-        // Handle pay button click
-        payButton.addEventListener('click', async function() {
-            hideError();
-            setProcessing(true);
-
-            try {
-                // Step 1: Create a PaymentMethod
-                var result = await stripe.createPaymentMethod({
-                    type: 'card',
-                    card: cardElement,
-                    billing_details: {
-                        name: name,
-                        email: email,
-                    },
-                });
-
-                if (result.error) {
-                    showError(result.error.message);
-                    setProcessing(false);
-                    return;
-                }
-
-                var paymentMethodId = result.paymentMethod.id;
-
-                // Step 2: Send to Worker to create the payment
-                var response = await fetch(WORKER_URL + '/api/create-payment', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        paymentMethodId: paymentMethodId,
-                        name: name,
-                        email: email,
-                    }),
-                });
-
-                var data = await response.json();
-
-                if (!response.ok) {
-                    showError(data.error || 'Payment failed. Please try again.');
-                    setProcessing(false);
-                    return;
-                }
-
-                // Step 3: Handle 3D Secure if required
-                if (data.requiresAction) {
-                    var confirmResult = await stripe.confirmCardPayment(data.clientSecret);
-
-                    if (confirmResult.error) {
-                        showError(confirmResult.error.message);
-                        setProcessing(false);
-                        return;
-                    }
-
-                    if (confirmResult.paymentIntent.status === 'succeeded') {
-                        window.location.href = 'payment-success.html';
-                        return;
-                    }
-
-                    showError('Payment could not be completed. Please try again.');
-                    setProcessing(false);
-                    return;
-                }
-
-                // Step 4: Payment succeeded without 3D Secure
-                if (data.success) {
-                    window.location.href = 'payment-success.html';
-                    return;
-                }
-
-                showError(data.error || 'Something went wrong. Please try again.');
-                setProcessing(false);
-
-            } catch (error) {
-                console.error('Payment error:', error);
-                showError('Unable to process your payment. Please check your connection and try again.');
-                setProcessing(false);
-            }
-        });
+            // Redirect to provider-hosted checkout
+            window.location.href = data.checkoutUrl;
+        } catch (error) {
+            console.error('Checkout error:', error);
+            showError('Unable to connect to payment service. Please check your connection and try again.');
+        }
     }
 
-    // Run on DOM ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {

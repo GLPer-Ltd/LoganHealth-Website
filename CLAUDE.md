@@ -34,7 +34,7 @@ python3 -m http.server 8000
 
 - **js/main.js** - Core UI: navigation, scroll animations (IntersectionObserver), smooth scroll, FAQ accordion. Exports `window.utils` with validation helpers (`isValidEmail`, `isValidUKPhone`)
 - **js/questionnaire.js** - Multi-step form logic: BMI calculation, eligibility assessment, step validation. Exports `window.questionnaireState` containing all form data
-- **js/formHandler.js** - Formspree integration. Reads from `window.questionnaireState` and POSTs to Formspree endpoint
+- **js/formHandler.js** - Questionnaire submission. Reads from `window.questionnaireState` and POSTs to Worker `/api/submit-questionnaire`
 
 ### Data Flow (Questionnaire)
 1. User fills questionnaire → data saved to `questionnaireState.data`
@@ -44,34 +44,40 @@ python3 -m http.server 8000
 
 ## Payment Integration
 
-Payment is required before booking a consultation. The flow uses JotForm + Square for payments, Cloudflare Workers for backend logic, and Resend for email delivery.
+Payment is required before booking a consultation. The system uses a **provider abstraction** pattern with redirect-based checkout. The active provider (Stripe/Ryft) is set via config in the Worker.
 
 ### Payment Flow
 1. User completes questionnaire and is eligible
-2. User chooses payment type: **One-off** or **Monthly Subscription**
-3. User is redirected to JotForm payment form (with Square integration)
-4. After payment, JotForm redirects to `/payment-success.html`
-5. JotForm webhook fires to Cloudflare Worker
-6. Worker verifies payment, generates booking token, stores in KV, sends email
-7. User receives email with tokenized booking link
-8. User clicks link → `/book.html?token=xxx`
-9. Booking page validates token with Worker, shows Calendly if valid
+2. User selects medication: **Wegovy** (£149) or **Mounjaro** (£199)
+3. Website calls Worker `POST /api/create-checkout` with `{name, email, product}`
+4. Worker creates checkout session with active provider, returns redirect URL
+5. Website redirects user to provider-hosted checkout page
+6. Provider processes payment, redirects to `/payment-success.html?session_id=xxx`
+7. Provider webhook fires → Worker verifies, generates booking token, sends email
+8. User receives email with tokenized booking link
+9. User clicks link → `/book.html?token=xxx`
+10. Booking page validates token with Worker, shows Calendly if valid
 
 ### Architecture Components
 
 ```
-┌─────────────────┐     ┌─────────────┐     ┌──────────────────────────────────┐
-│  Static Site    │     │   JotForm   │     │  Cloudflare Worker               │
-│  (GitHub Pages) │────▶│  + Square   │────▶│  loganhealth-payments            │
-│                 │     │             │     │  .misty-heart-ac54.workers.dev   │
-└─────────────────┘     └─────────────┘     └──────────────────────────────────┘
-                                                          │
-                              ┌────────────────┬──────────┴─────────┐
-                              ▼                ▼                    ▼
-                        ┌──────────┐    ┌───────────┐    ┌──────────────────┐
-                        │ Resend   │    │ Cloudflare│    │ Square API       │
-                        │ (email)  │    │ KV Store  │    │ (verification)   │
-                        └──────────┘    └───────────┘    └──────────────────┘
+┌─────────────────┐                    ┌──────────────────────────────────┐
+│  Static Site    │   create-checkout  │  Cloudflare Worker               │
+│  (GitHub Pages) │───────────────────▶│  loganhealth-payments            │
+│                 │◀──checkoutUrl──────│  .misty-heart-ac54.workers.dev   │
+└────────┬────────┘                    └───────────────┬──────────────────┘
+         │ redirect                                    │
+         ▼                                             │
+┌─────────────────┐    webhook    ┌────────────────┐   │
+│ Payment Provider│──────────────▶│ /api/webhook/* │   │
+│ (Stripe / Ryft) │               └────────────────┘   │
+└─────────────────┘                        │           │
+                              ┌────────────┴───────────┤
+                              ▼            ▼           ▼
+                        ┌──────────┐ ┌───────────┐
+                        │ Resend   │ │ Cloudflare│
+                        │ (email)  │ │ KV Store  │
+                        └──────────┘ └───────────┘
 ```
 
 ### Cloudflare Worker (`loganhealth-payments`)
@@ -79,68 +85,56 @@ Payment is required before booking a consultation. The flow uses JotForm + Squar
 **Location:** Separate repo at `../payments/` (GitHub: GLPer-Ltd/LoginHealth-Payments)
 
 **Endpoints:**
-- `POST /api/webhook` - Receives JotForm webhook, verifies payment, creates token, sends email
-- `GET /api/validate-token?token=xxx` - Validates booking token
-- `POST /api/mark-used?token=xxx` - Marks token as used after booking
+- `POST /api/create-checkout` - Create checkout session, return redirect URL
+- `POST /api/webhook/stripe` - Stripe webhook → verify, generate token, send email
+- `POST /api/webhook/ryft` - Ryft webhook (future)
+- `GET /api/payment-status` - Check checkout session status
+- `GET /api/validate-token` - Validate booking token
+- `POST /api/mark-used` - Mark token as used after booking
+- `POST /api/submit-questionnaire` - Email questionnaire to pharmacy
 - `GET /health` - Health check
 
-**Source files:**
-- `src/index.js` - Route handler
-- `src/webhook.js` - Webhook processing
-- `src/validate.js` - Token validation
-- `src/mark-used.js` - Token invalidation
-- `src/email.js` - Resend email sending
-- `src/square.js` - Square API verification
-
 **Environment variables (wrangler.toml):**
-- `SQUARE_ENVIRONMENT` - "sandbox" or "production"
-- `BOOKING_TOKEN_TTL` - Token expiry in seconds (default: 259200 = 72 hours)
-- `SITE_URL` - Base URL for booking links
+- `PAYMENT_PROVIDER` - `"stripe"` or `"ryft"`
+- `PRICE_WEGOVY` - Wegovy price in pence (default: `14900`)
+- `PRICE_MOUNJARO` - Mounjaro price in pence (default: `19900`)
+- `PAYMENT_CURRENCY` - Currency code (default: `gbp`)
+- `BOOKING_TOKEN_TTL` - Token expiry in seconds (default: `259200` = 72 hours)
+- `SITE_URL` - Base URL for booking links and checkout redirects
 - `EMAIL_FROM` - Sender email address
 
 **Secrets (set via `wrangler secret put`):**
-- `SQUARE_ACCESS_TOKEN` - Square API access token
+- `STRIPE_SECRET_KEY` - Stripe API secret key
+- `STRIPE_WEBHOOK_SECRET` - Stripe webhook signing secret
 - `EMAIL_API_KEY` - Resend API key
-- `JOTFORM_API_KEY` - JotForm API key
 
 **KV Namespace:** `BOOKING_TOKENS` - stores tokens with 72-hour TTL
 
-### JotForm Configuration
-
-**Two forms required:**
-- **One-off:** https://pci.jotform.com/form/260355646726059
-- **Subscription:** https://pci.jotform.com/form/260355571683058
-
-**Each form has:**
-- Name field
-- Email field
-- Hidden field `paymentType` = "one-off" or "subscription"
-- Square payment integration
-- Webhook to Worker: `https://loganhealth-payments.misty-heart-ac54.workers.dev/api/webhook`
-- Redirect to: `https://loganhealth.co.uk/payment-success.html`
-
 ### Static Site Payment Files
 
-- **js/questionnaire.js** - `JOTFORM_URLS` constant maps payment types to JotForm URLs
-- **js/booking.js** - Token validation logic, `WORKER_URL` constant
+- **js/questionnaire.js** - Eligibility logic, medication selection buttons, `redirectToPayment(product)`
+- **js/payment.js** - Calls Worker `/api/create-checkout`, redirects to provider checkout. `WORKER_URL` constant
+- **js/booking.js** - Token validation logic, Calendly embed. `WORKER_URL` constant
+- **js/formHandler.js** - Questionnaire submission to Worker. `WORKER_URL` constant
+- **payment.html** - Checkout redirect page (loading state)
 - **book.html** - Token-gated booking page with Calendly
-- **payment-success.html** - Post-payment confirmation page
+- **payment-success.html** - Post-payment confirmation with session verification
 
 ### External Services
 
 | Service | Purpose | Account |
 |---------|---------|---------|
 | Cloudflare | Worker hosting, KV storage | peter@glper.com |
-| Square | Payment processing | (sandbox mode) |
-| JotForm | Payment forms | - |
+| Stripe | Payment processing | - |
 | Resend | Transactional email | peter@glper.com |
 
-### Switching to Production
+### Switching Payment Provider
 
-1. Update Square credentials: `wrangler secret put SQUARE_ACCESS_TOKEN`
-2. Update `wrangler.toml`: `SQUARE_ENVIRONMENT = "production"`
-3. Update `SITE_URL` if using custom domain
-4. Redeploy: `npx wrangler deploy`
+1. Set `PAYMENT_PROVIDER` in `wrangler.toml` (e.g., `"ryft"`)
+2. Set provider secrets: `wrangler secret put RYFT_SECRET_KEY`, `wrangler secret put RYFT_WEBHOOK_SECRET`
+3. Configure webhook endpoint in provider dashboard
+4. Redeploy: `npm run deploy:production`
+5. No website changes needed
 
 ### CSS Organization
 
