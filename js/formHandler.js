@@ -1,126 +1,93 @@
 /* =============================================
-   Logan Health - Form Handler (Formspree)
+   Logan Health - Form Handler (Worker API)
    ============================================= */
+
+const WORKER_URL = 'https://loganhealth-payments.misty-heart-ac54.workers.dev';
 
 /* =============================================
-   Formspree Configuration
-
-   To set up Formspree:
-   1. Go to https://formspree.io
-   2. Create a free account
-   3. Create a new form
-   4. Copy your form endpoint (e.g., https://formspree.io/f/xxxxxxxx)
-   5. Replace the FORMSPREE_ENDPOINT below with your endpoint
+   Submit Questionnaire to Worker
    ============================================= */
-
-// Replace this with your actual Formspree endpoint
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mreqnoly';
-
-/* =============================================
-   Submit to Formspree
-   ============================================= */
-function submitToFormspree() {
+function submitQuestionnaire() {
     const data = window.questionnaireState.data;
     const eligible = window.questionnaireState.eligible;
     const eligibilityReason = window.questionnaireState.eligibilityReason;
 
-    // Format the data for email
-    const formData = {
-        // Subject line
-        _subject: `New GLP-1 Consultation Request - ${data.fullName}`,
+    // Format the data for the Worker email endpoint
+    const payload = {
+        fullName: data.fullName,
+        email: data.email,
+        phone: data.phone,
+        contactMethod: data.contactMethod,
 
-        // Customer Details
-        'Customer Name': data.fullName,
-        'Email': data.email,
-        'Phone': data.phone,
-        'Preferred Contact': data.contactMethod,
+        eligible: eligible,
+        eligibilityReason: eligibilityReason || 'Meets all criteria',
 
-        // Eligibility
-        'Eligibility Status': eligible === true ? 'ELIGIBLE' : eligible === 'review' ? 'NEEDS REVIEW' : 'NOT ELIGIBLE',
-        'Eligibility Notes': eligibilityReason || 'Meets all criteria',
+        weightLossReason: formatWeightLossReason(data.weightLossReason),
+        weightLossGoal: formatWeightLossGoal(data.weightLossGoal),
 
-        // Step 1: Motivation & Goals
-        'Weight Loss Reason': formatWeightLossReason(data.weightLossReason),
-        'Weight Loss Goal': formatWeightLossGoal(data.weightLossGoal),
+        bmi: data.bmi ? data.bmi.toFixed(1) : null,
+        heightCm: data.heightCm ? data.heightCm.toFixed(1) : null,
+        weightKg: data.weightKg ? data.weightKg.toFixed(1) : null,
+        highestWeightKg: data.highestWeightKg ? data.highestWeightKg.toFixed(1) : null,
+        targetWeightKg: data.targetWeightKg ? data.targetWeightKg.toFixed(1) : null,
 
-        // Step 2: Measurements
-        'BMI': data.bmi ? data.bmi.toFixed(1) : 'Not calculated',
-        'Height (cm)': data.heightCm ? data.heightCm.toFixed(1) : 'Not provided',
-        'Current Weight (kg)': data.weightKg ? data.weightKg.toFixed(1) : 'Not provided',
-        'Highest Weight (kg)': data.highestWeightKg ? data.highestWeightKg.toFixed(1) : 'Not provided',
-        'Target Weight (kg)': data.targetWeightKg ? data.targetWeightKg.toFixed(1) : 'Not provided',
+        dob: `${data.dobDay}/${data.dobMonth}/${data.dobYear}`,
+        age: data.age,
+        sex: data.sex,
+        ethnicity: formatEthnicity(data.ethnicity),
 
-        // Step 3: Personal Info
-        'Date of Birth': `${data.dobDay}/${data.dobMonth}/${data.dobYear}`,
-        'Age': data.age,
-        'Sex': data.sex,
-        'Ethnicity': formatEthnicity(data.ethnicity),
+        conditions: formatConditions(data.conditions),
 
-        // Step 5: Medical Conditions
-        'Medical Conditions': formatConditions(data.conditions),
+        eatingDisorder: data.eatingDisorder || 'Not answered',
+        eatingDisorderDetails: data.eatingDisorderDetails || '',
+        kidneyDisease: data.kidneyDisease || 'Not answered',
+        kidneyDiseaseDetails: data.kidneyDiseaseDetails || '',
+        pregnantOrTrying: data.pregnantOrTrying || 'Not answered',
+        pregnantOrTryingDetails: data.pregnantOrTryingDetails || '',
+        otherConditions: data.otherConditions || 'None listed',
+        medications: data.medications || 'None listed',
+        allergies: data.allergies || 'None listed',
 
-        // Step 6: Safety Screening
-        'Eating Disorder': data.eatingDisorder || 'Not answered',
-        'Eating Disorder Details': data.eatingDisorderDetails || 'N/A',
-        'Kidney Disease': data.kidneyDisease || 'Not answered',
-        'Kidney Disease Details': data.kidneyDiseaseDetails || 'N/A',
-        'Pregnant/Breastfeeding/Trying': data.pregnantOrTrying || 'Not answered',
-        'Pregnancy Details': data.pregnantOrTryingDetails || 'N/A',
-        'Other Conditions': data.otherConditions || 'None listed',
-        'Current Medications': data.medications || 'None listed',
-        'Allergies': data.allergies || 'None listed',
+        medicalHistory: formatCheckboxList(data.medicalHistory, medicalHistoryLabels),
+        thyroidOrLiver: data.thyroidOrLiver || 'Not answered',
+        diabetesInsulin: data.diabetesInsulin || 'Not answered',
+        diabetesOtherMeds: data.diabetesOtherMeds || 'Not answered',
+        gallbladderIssues: formatCheckboxList(data.gallbladderIssues, gallbladderLabels),
+        additionalHistory: formatCheckboxList(data.additionalHistory, additionalHistoryLabels),
 
-        // Step 7: Medical History
-        'Medical History': formatCheckboxList(data.medicalHistory, medicalHistoryLabels),
-        'Thyroid or Liver Disease': data.thyroidOrLiver || 'Not answered',
-        'Diabetes - Using Insulin': data.diabetesInsulin || 'Not answered',
-        'Diabetes - Other Meds': data.diabetesOtherMeds || 'Not answered',
-        'Gallbladder Issues': formatCheckboxList(data.gallbladderIssues, gallbladderLabels),
-        'Additional Health Conditions': formatCheckboxList(data.additionalHistory, additionalHistoryLabels),
+        specificMedications: formatCheckboxList(data.specificMedications, specificMedicationLabels),
+        isSmoker: data.isSmoker || 'Not answered',
+        recentInjectableWeightLoss: data.recentInjectableWeightLoss || 'Not answered',
 
-        // Step 8: Medications & Lifestyle
-        'Specific Medications': formatCheckboxList(data.specificMedications, specificMedicationLabels),
-        'Smoker': data.isSmoker || 'Not answered',
-        'Recent Injectable Weight Loss': data.recentInjectableWeightLoss || 'Not answered',
+        contraceptionAgreement: data.sex === 'female' ? (data.contraceptionAgreement || 'Not answered') : 'N/A',
 
-        // Step 9: Contraception
-        'Contraception Agreement': data.sex === 'female' ? (data.contraceptionAgreement || 'Not answered') : 'N/A',
+        importantInfoConfirmed: data.importantInfoConfirmed ? true : false,
+        termsAgreement: data.termsAgreement ? true : false,
+        consent: data.consent ? true : false,
+        marketing: data.marketing ? true : false,
 
-        // Consent
-        'Important Info Confirmed': data.importantInfoConfirmed ? 'Yes' : 'No',
-        'Terms Agreement': data.termsAgreement ? 'Yes' : 'No',
-        'Data Consent': data.consent ? 'Yes' : 'No',
-        'Marketing Consent': data.marketing ? 'Yes' : 'No',
-
-        // Metadata
-        'Submitted At': new Date().toLocaleString('en-GB', {
+        submittedAt: new Date().toLocaleString('en-GB', {
             dateStyle: 'full',
             timeStyle: 'short'
         }),
-        'Source': window.location.href
     };
 
-    // Send to Formspree
-    fetch(FORMSPREE_ENDPOINT, {
+    fetch(`${WORKER_URL}/api/submit-questionnaire`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
     })
     .then(response => {
         if (response.ok) {
-            console.log('Form submitted successfully');
+            console.log('Questionnaire submitted successfully');
         } else {
-            console.error('Form submission failed');
-            // Optionally show user-friendly error message
+            console.error('Questionnaire submission failed');
         }
     })
     .catch(error => {
-        console.error('Form submission error:', error);
-        // Form submission failed, but we still show results
-        // The data is stored in the state and can be retrieved
+        console.error('Questionnaire submission error:', error);
     });
 }
 
@@ -294,7 +261,9 @@ function getBackup() {
 /* =============================================
    Export Functions
    ============================================= */
-window.submitToFormspree = submitToFormspree;
+window.submitQuestionnaire = submitQuestionnaire;
+// Keep backward compat in case questionnaire.js still calls old name
+window.submitToFormspree = submitQuestionnaire;
 window.formBackup = {
     save: backupFormData,
     clear: clearBackup,

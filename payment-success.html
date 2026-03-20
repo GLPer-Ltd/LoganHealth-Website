@@ -263,5 +263,32 @@
             </div>
         </main>
     </div>
+
+    <script>
+    (function() {
+        var WORKER_URL = 'https://loganhealth-payments.misty-heart-ac54.workers.dev';
+        var params = new URLSearchParams(window.location.search);
+        var sessionId = params.get('session_id');
+
+        if (sessionId) {
+            fetch(WORKER_URL + '/api/payment-status?session_id=' + encodeURIComponent(sessionId))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.status === 'paid') {
+                        // Payment confirmed — page already shows success state
+                        return;
+                    }
+                    // If pending, the webhook may still be processing — show a note
+                    var msg = document.querySelector('.success-message');
+                    if (msg && data.status === 'pending') {
+                        msg.textContent = 'Your payment is being processed. You should receive your booking email shortly.';
+                    }
+                })
+                .catch(function() {
+                    // Silently fail — the success page is already showing
+                });
+        }
+    })();
+    </script>
 </body>
 </html>
