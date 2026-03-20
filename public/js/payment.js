@@ -88,6 +88,11 @@
             window.location.href = data.checkoutUrl;
         } catch (error) {
             console.error('Checkout error:', error);
+            // If on HTTP, the CORS preflight will fail — nudge to HTTPS
+            if (window.location.protocol === 'http:') {
+                window.location.href = window.location.href.replace('http:', 'https:');
+                return;
+            }
             showError('Unable to connect to payment service. Please check your connection and try again.');
         }
     }

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Static HTML/CSS/JS website for Logan Health's GLP-1 weight loss treatment service. Hosted at https://loganhealth.co.uk/
+Astro static site for Logan Health's GLP-1 weight loss treatment service. Hosted at https://loganhealth.co.uk/ via GitHub Pages.
 
 Developed mobile first to support mobile devices such as phones, tablets but also desktop screens.
 
@@ -12,134 +12,98 @@ Developed mobile first to support mobile devices such as phones, tablets but als
 
 ```
 LoganHealthWorkspace/
-├── LoganHealth.code-workspace    # VS Code workspace file
-├── website/                      # This repo (GLPer-Ltd/LoganHealth-Website)
-└── payments/                     # Cloudflare Worker (GLPer-Ltd/LoginHealth-Payments)
++-- LoganHealth.code-workspace    # VS Code workspace file
++-- website/                      # This repo (GLPer-Ltd/LoganHealth-Website)
++-- payments/                     # Cloudflare Worker (GLPer-Ltd/LoginHealth-Payments)
 ```
 
 ## Development
 
-No build system - pure static files. To develop:
 ```bash
-# Open in browser (macOS)
-open index.html
-
-# Or serve locally with Python
-python3 -m http.server 8000
+npm install          # Install dependencies
+npm run dev          # Dev server at http://localhost:4321
+npm run build        # Build static site to dist/
+npm run preview      # Preview production build locally
 ```
+
+Deploys automatically via GitHub Actions (`.github/workflows/deploy.yml`) on push to main. Output uses Astro directory-style clean URLs (no .html extensions).
 
 ## Architecture
 
-### JavaScript Modules (vanilla JS, no framework)
-
-- **js/main.js** - Core UI: navigation, scroll animations (IntersectionObserver), smooth scroll, FAQ accordion. Exports `window.utils` with validation helpers (`isValidEmail`, `isValidUKPhone`)
-- **js/questionnaire.js** - Multi-step form logic: BMI calculation, eligibility assessment, step validation. Exports `window.questionnaireState` containing all form data
-- **js/formHandler.js** - Questionnaire submission. Reads from `window.questionnaireState` and POSTs to Worker `/api/submit-questionnaire`
-
-### Data Flow (Questionnaire)
-1. User fills questionnaire → data saved to `questionnaireState.data`
-2. On submit → `checkEligibility()` evaluates BMI/age/conditions
-3. `submitToFormspree()` sends data to pharmacy email
-4. Results screen shows eligible (payment options) or not-eligible message
-
-## Payment Integration
-
-Payment is required before booking a consultation. The system uses a **provider abstraction** pattern with redirect-based checkout. The active provider (Stripe/Ryft) is set via config in the Worker.
-
-### Payment Flow
-1. User completes questionnaire and is eligible
-2. User selects medication: **Wegovy** (£149) or **Mounjaro** (£199)
-3. Website calls Worker `POST /api/create-checkout` with `{name, email, product}`
-4. Worker creates checkout session with active provider, returns redirect URL
-5. Website redirects user to provider-hosted checkout page
-6. Provider processes payment, redirects to `/payment-success.html?session_id=xxx`
-7. Provider webhook fires → Worker verifies, generates booking token, sends email
-8. User receives email with tokenized booking link
-9. User clicks link → `/book.html?token=xxx`
-10. Booking page validates token with Worker, shows Calendly if valid
-
-### Architecture Components
+### Astro Project Structure
 
 ```
-┌─────────────────┐                    ┌──────────────────────────────────┐
-│  Static Site    │   create-checkout  │  Cloudflare Worker               │
-│  (GitHub Pages) │───────────────────▶│  loganhealth-payments            │
-│                 │◀──checkoutUrl──────│  .misty-heart-ac54.workers.dev   │
-└────────┬────────┘                    └───────────────┬──────────────────┘
-         │ redirect                                    │
-         ▼                                             │
-┌─────────────────┐    webhook    ┌────────────────┐   │
-│ Payment Provider│──────────────▶│ /api/webhook/* │   │
-│ (Stripe / Ryft) │               └────────────────┘   │
-└─────────────────┘                        │           │
-                              ┌────────────┴───────────┤
-                              ▼            ▼           ▼
-                        ┌──────────┐ ┌───────────┐
-                        │ Resend   │ │ Cloudflare│
-                        │ (email)  │ │ KV Store  │
-                        └──────────┘ └───────────┘
+website/
++-- src/
+|   +-- pages/              # Astro page files (.astro)
+|   +-- layouts/            # Page layouts
+|   +-- components/         # Shared components
++-- public/                 # Static assets (copied as-is to dist/)
+|   +-- css/                # Stylesheets
+|   +-- js/                 # Vanilla JS modules
+|   +-- images/             # Image assets
+|   +-- assets/video/       # Video files
+|   +-- favicon.svg
++-- astro.config.mjs        # Astro configuration
++-- package.json
 ```
 
-### Cloudflare Worker (`loganhealth-payments`)
+### Layouts
 
-**Location:** Separate repo at `../payments/` (GitHub: GLPer-Ltd/LoginHealth-Payments)
+| Layout | File | Used by | Description |
+|--------|------|---------|-------------|
+| BaseLayout | `src/layouts/BaseLayout.astro` | Public-facing pages | Full nav (Header), footer, GSAP animations, WhatsApp button |
+| FlowLayout | `src/layouts/FlowLayout.astro` | Transactional pages | Minimal header (FlowHeader), no footer, no GSAP |
 
-**Endpoints:**
-- `POST /api/create-checkout` - Create checkout session, return redirect URL
-- `POST /api/webhook/stripe` - Stripe webhook → verify, generate token, send email
-- `POST /api/webhook/ryft` - Ryft webhook (future)
-- `GET /api/payment-status` - Check checkout session status
-- `GET /api/validate-token` - Validate booking token
-- `POST /api/mark-used` - Mark token as used after booking
-- `POST /api/submit-questionnaire` - Email questionnaire to pharmacy
-- `GET /health` - Health check
+### Components
 
-**Environment variables (wrangler.toml):**
-- `PAYMENT_PROVIDER` - `"stripe"` or `"ryft"`
-- `PRICE_WEGOVY` - Wegovy price in pence (default: `14900`)
-- `PRICE_MOUNJARO` - Mounjaro price in pence (default: `19900`)
-- `PAYMENT_CURRENCY` - Currency code (default: `gbp`)
-- `BOOKING_TOKEN_TTL` - Token expiry in seconds (default: `259200` = 72 hours)
-- `SITE_URL` - Base URL for booking links and checkout redirects
-- `EMAIL_FROM` - Sender email address
+| Component | File | Description |
+|-----------|------|-------------|
+| Head | `src/components/Head.astro` | HTML head: meta tags, fonts, CSS links |
+| Header | `src/components/Header.astro` | Full navigation bar with links and CTA |
+| FlowHeader | `src/components/FlowHeader.astro` | Minimal header for transactional flow pages |
+| Footer | `src/components/Footer.astro` | Site footer with contact info and links |
+| WhatsAppButton | `src/components/WhatsAppButton.astro` | Floating WhatsApp support button |
 
-**Secrets (set via `wrangler secret put`):**
-- `STRIPE_SECRET_KEY` - Stripe API secret key
-- `STRIPE_WEBHOOK_SECRET` - Stripe webhook signing secret
-- `EMAIL_API_KEY` - Resend API key
+### Pages
 
-**KV Namespace:** `BOOKING_TOKENS` - stores tokens with 72-hour TTL
+| Page | File | Layout | Purpose |
+|------|------|--------|---------|
+| `/` | `src/pages/index.astro` | BaseLayout | Landing page with questionnaire, pricing, FAQ |
+| `/choose-medication` | `src/pages/choose-medication.astro` | FlowLayout | Contact details + medication selection |
+| `/payment` | `src/pages/payment.astro` | FlowLayout | Checkout redirect (loading state) |
+| `/book` | `src/pages/book.astro` | FlowLayout | Token-gated booking with Calendly |
+| `/payment-success` | `src/pages/payment-success.astro` | FlowLayout | Post-payment confirmation |
+| `/mounjaro` | `src/pages/mounjaro.astro` | BaseLayout | Mounjaro product page |
+| `/wegovy` | `src/pages/wegovy.astro` | BaseLayout | Wegovy product page |
+| `/privacy` | `src/pages/privacy.astro` | BaseLayout | Privacy policy |
+| `/terms` | `src/pages/terms.astro` | BaseLayout | Terms and conditions |
+| `/tdee` | `src/pages/tdee.astro` | BaseLayout | TDEE calculator |
+| `/article-eating-well` | `src/pages/article-eating-well.astro` | BaseLayout | Article page |
+| `/article-first-month` | `src/pages/article-first-month.astro` | BaseLayout | Article page |
+| `/article-side-effects` | `src/pages/article-side-effects.astro` | BaseLayout | Article page |
 
-### Static Site Payment Files
+### JavaScript Modules (vanilla JS in public/js/, no framework)
 
-- **js/questionnaire.js** - Eligibility logic, medication selection buttons, `redirectToPayment(product)`
-- **js/payment.js** - Calls Worker `/api/create-checkout`, redirects to provider checkout. `WORKER_URL` constant
-- **js/booking.js** - Token validation logic, Calendly embed. `WORKER_URL` constant
-- **js/formHandler.js** - Questionnaire submission to Worker. `WORKER_URL` constant
-- **payment.html** - Checkout redirect page (loading state)
-- **book.html** - Token-gated booking page with Calendly
-- **payment-success.html** - Post-payment confirmation with session verification
+- **js/main.js** -- Core UI: navigation, scroll animations (IntersectionObserver), smooth scroll, FAQ accordion. Exports `window.utils` with validation helpers (`isValidEmail`, `isValidUKPhone`)
+- **js/questionnaire.js** -- Multi-step form logic: BMI calculation, eligibility assessment, step validation. Stores data in `sessionStorage` (`lh_questionnaire`). Eligible users are redirected to `/choose-medication`
+- **js/payment.js** -- Reads sessionStorage (`lh_checkout`), calls Worker `/api/create-checkout`, redirects to Stripe Checkout. `WORKER_URL` constant
+- **js/booking.js** -- Token validation against Worker, Calendly embed. Handles both `?session_id=` (post-payment) and `?token=` (email link) entry. `WORKER_URL` constant
+- **js/gsap-animations.js** -- GSAP ScrollTrigger animations
+- **js/tdee.js** -- TDEE calculator logic
 
-### External Services
+### sessionStorage Data Flow
 
-| Service | Purpose | Account |
-|---------|---------|---------|
-| Cloudflare | Worker hosting, KV storage | peter@glper.com |
-| Stripe | Payment processing | - |
-| Resend | Transactional email | peter@glper.com |
+Data passes between pages via sessionStorage:
 
-### Switching Payment Provider
-
-1. Set `PAYMENT_PROVIDER` in `wrangler.toml` (e.g., `"ryft"`)
-2. Set provider secrets: `wrangler secret put RYFT_SECRET_KEY`, `wrangler secret put RYFT_WEBHOOK_SECRET`
-3. Configure webhook endpoint in provider dashboard
-4. Redeploy: `npm run deploy:production`
-5. No website changes needed
+1. **`lh_questionnaire`** -- Set by questionnaire.js on index page when user completes questionnaire. Contains all answers, eligibility result, and eligibility reason.
+2. **`lh_checkout`** -- Set by choose-medication page. Contains name, email, phone, selected product, consent, marketing preference, plus the questionnaire data.
+3. Payment.js reads `lh_checkout` and sends everything to the worker's `/api/create-checkout` endpoint.
 
 ### CSS Organization
 
-- **css/styles.css** - All styles with CSS custom properties in `:root` for theming
-- **css/animations.css** - Scroll animations, keyframes, transitions
+- **css/styles.css** -- All styles with CSS custom properties in `:root` for theming
+- **css/animations.css** -- Scroll animations, keyframes, transitions
 
 ### Theming
 
@@ -149,60 +113,73 @@ All colors defined as CSS variables in `:root`. To change brand colors, edit the
 --color-secondary: #F97316;    /* CTA coral */
 ```
 
-## index.html Section Map (top to bottom)
+## Payment & Booking Flow
 
-The homepage is a large single-page layout. Key sections and their approximate line ranges:
+Payment is required before booking a consultation. The system uses a **provider abstraction** pattern with redirect-based checkout. The active provider (Stripe) is configured in the Worker.
 
-| Section | Lines (approx) | HTML ID / Class | Notes |
-|---------|----------------|-----------------|-------|
-| Navigation | 28-58 | `#navbar` | Nav links + CTA button |
-| Review Banner | 60-72 | `#reviewBanner` | Rotating review ticker at top |
-| Hero | 74-142 | `#hero` | Video bg, title, subtitle, trust badges, image tiles |
-| How It Works | 144-256 | `#how-it-works` | 3-step cards with connector arrows |
-| What Makes Us Different | 258-333 | `.why-different` | Checklist grid of differentiators + footnote |
-| What's Included in Price | 335-407 | `#whats-included` | 5 image+text cards (medication price inclusions) |
-| Testimonials (Google Reviews) | 409-510 | `.reviews` | Real patient review cards |
-| Treatments | 512-682 | `#treatments` | Wegovy/Mounjaro cards + comparison table |
-| Success Stories | 684-776 | `.success-stories` | Patient transformation stories |
-| Companion App | 778-894 | `#glper-app` | App features list + screenshot |
-| Pricing | ~896-980 | `#pricing` | One-off vs subscription pricing cards |
-| About Us | ~982-1050 | `#about` | Team info, pharmacy history |
-| FAQ | ~1052-1200 | `#faq` | Accordion FAQ items |
-| Questionnaire | ~1200+ | `#questionnaire` | Multi-step eligibility form |
-| Footer | end | `footer` | Contact info, links, legal |
+### Flow
 
-**Note:** Line numbers shift as content is edited. Use section IDs/classes to locate sections reliably.
+1. User completes questionnaire on index page and is eligible
+2. Redirected to `/choose-medication` page
+3. User enters contact details (name, email, phone) and selects Wegovy or Mounjaro
+4. Ticks consent and terms checkboxes, clicks Continue to Payment
+5. Redirected to `/payment` page which calls Worker `POST /api/create-checkout`
+6. Worker creates Stripe Checkout session, returns redirect URL
+7. User completes payment on Stripe-hosted page
+8. Stripe redirects to `/book?session_id={CHECKOUT_SESSION_ID}`
+9. Book page polls Worker `/api/payment-status` to get booking token
+10. Once token is available, Calendly embed is shown
+11. User selects date/time in Calendly and confirms booking
+12. `POST /api/mark-used` invalidates token and triggers pharmacy email
+
+A backup booking email is also sent via the Stripe webhook, so the user can book later even if they close the browser.
+
+### Cloudflare Worker (`loganhealth-payments`)
+
+**Location:** Separate repo at `../payments/` (GitHub: GLPer-Ltd/LoginHealth-Payments)
+
+**Endpoints:**
+- `POST /api/create-checkout` -- Create checkout session, store session data, return redirect URL
+- `POST /api/webhook/stripe` -- Stripe webhook: verify, generate token, send backup booking email
+- `GET /api/payment-status` -- Check checkout session status, return token
+- `GET /api/validate-token` -- Validate booking token
+- `POST /api/mark-used` -- Mark token as used, send pharmacy email
+- `GET /health` -- Health check
+
+**Secrets (set via `wrangler secret put`):**
+- `STRIPE_SECRET_KEY` -- Stripe API secret key
+- `STRIPE_WEBHOOK_SECRET` -- Stripe webhook signing secret
+- `EMAIL_API_KEY` -- Resend API key for sending emails
+
+### External Services
+
+| Service | Purpose | Account |
+|---------|---------|---------|
+| Cloudflare | Worker hosting, KV storage | peter@glper.com |
+| Stripe | Payment processing | - |
+| Resend | Transactional email | peter@glper.com |
 
 ## Image Assets
 
 | Directory | Contents |
 |-----------|----------|
-| `images/hero/` | Hero section image tiles (happy customer, calorie deficit, recipe, consultation) |
-| `images/included/` | "What's included in price" section images (jab, consultation, deficit, food, app) |
-| `images/illustrations/` | Treatment info illustrations (what to expect, eating well, side effects) |
-| `images/` | App screenshots (`glper-app.png`), store buttons, medication pen images, logo |
+| `public/images/hero/` | Hero section image tiles |
+| `public/images/included/` | "What's included in price" section images |
+| `public/images/illustrations/` | Treatment info illustrations |
+| `public/images/` | App screenshots, medication pen images, logo |
 
 ## Key Configuration Points
 
-1. **Formspree endpoint** — `js/formHandler.js` line 17: `FORMSPREE_ENDPOINT`
-2. **Calendly URL** — `index.html` search for `calendly-inline-widget`
-3. **Treatment pricing** — `index.html` search for `price-amount`
-4. **Monthly plan pricing** — Hero section, `.hero-pricing` element (placeholder `£XX` pending confirmation)
-5. **Pharmacy contact info** — Multiple locations in `index.html`
-6. **App store links** — Removed from homepage per Feb 2026 update; app is now referenced generically
-7. **Review banner data** — `js/main.js` contains the rotating review array
-
-## Branding Notes
-
-- The app was originally branded "GLPer" and is being rebranded to "Logan Health" across the site
-- Nav link changed from "GLPer App" to "App" (Feb 2026)
-- App section title changed from "Track Your Progress with GLPer" to "Track Your Progress with our App"
-- App Store / Google Play download buttons removed from homepage
+1. **Worker URL** -- `public/js/booking.js` and `public/js/payment.js`: `WORKER_URL` constant
+2. **Calendly URL** -- `src/pages/book.astro` search for `calendly`
+3. **Treatment pricing** -- Shown on index page; source of truth is `wrangler.toml` in payments repo
+4. **Pharmacy contact info** -- Multiple locations in page files
+5. **Review banner data** -- `public/js/main.js` contains the rotating review array
 
 ## Eligibility Logic (questionnaire.js)
 
-- BMI ≥ 30 (or ≥ 27.5 for non-white ethnicity)
-- BMI ≥ 27 with weight-related conditions (diabetes, hypertension, heart disease)
+- BMI >= 30 (or >= 27.5 for non-white ethnicity)
+- BMI >= 27 with weight-related conditions (diabetes, hypertension, heart disease)
 - Age 18-85
 - Not pregnant/breastfeeding
 - Eating disorders and pancreatitis flagged for pharmacist review
