@@ -167,16 +167,14 @@ import FlowLayout from '../layouts/FlowLayout.astro';
         /* Responsive */
         @media (max-width: 768px) {
             .booking-hero {
-                padding: var(--spacing-8) var(--spacing-4);
-            }
-
-            .booking-hero h1 {
-                font-size: var(--font-size-2xl);
+                flex-direction: column;
+                text-align: center;
+                padding: var(--spacing-4);
             }
 
             .booking-hero .trust-badges {
                 flex-direction: column;
-                gap: var(--spacing-3);
+                gap: var(--spacing-2);
             }
 
             .booking-main {
