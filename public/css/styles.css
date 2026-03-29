@@ -1828,13 +1828,54 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .faq-item.active .faq-answer {
-    max-height: 500px;
+    max-height: 1200px;
 }
 
 .faq-answer p {
     padding: 0 var(--spacing-6) var(--spacing-5);
     color: var(--color-text-light);
     line-height: 1.7;
+}
+
+.faq-pricing-tables {
+    display: flex;
+    gap: var(--spacing-6);
+    padding: 0 var(--spacing-6) var(--spacing-5);
+    flex-wrap: wrap;
+}
+
+.faq-dose-table {
+    flex: 1;
+    min-width: 200px;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.faq-dose-table thead th {
+    background: var(--color-primary);
+    color: white;
+    padding: var(--spacing-3) var(--spacing-4);
+    text-align: center;
+    font-weight: 600;
+}
+
+.faq-dose-table tbody td {
+    padding: var(--spacing-2) var(--spacing-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.faq-dose-table tbody td:last-child {
+    text-align: right;
+    font-weight: 600;
+}
+
+.faq-dose-table tbody tr:nth-child(even) {
+    background: var(--color-bg-alt, #f9fafb);
+}
+
+.faq-pricing-note {
+    font-size: 0.85rem;
+    font-style: italic;
 }
 
 .faq-cta {
@@ -1888,6 +1929,21 @@ h1, h2, h3, h4, h5, h6 {
     font-size: var(--font-size-sm);
     line-height: 1.7;
     margin-bottom: var(--spacing-6);
+}
+
+.footer-superintendent {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-4);
+}
+
+.footer-superintendent a {
+    color: var(--color-primary);
+    text-decoration: underline;
+}
+
+.footer-nhs-logo {
+    margin-bottom: var(--spacing-4);
 }
 
 .footer-social {

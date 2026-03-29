@@ -90,10 +90,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                        <span>GPhC Approved</span>
+                        <span>GPhC Registered</span>
                     </div>
                     <div class="hero-pricing">
-                        <span>Plans start at £XX per month</span>
+                        <span>Plans start at £89 per month</span>
                     </div>
                 </div>
             </div>
@@ -188,7 +188,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                         </svg>
                     </div>
                     <h3 class="step-title">Book Your Consultation</h3>
-                    <p class="step-description">If eligible, schedule a consultation with one of our clinical team (face-to-face or by Zoom) at a time that suits you.</p>
+                    <p class="step-description">If eligible, schedule a consultation with one of our clinical team (face-to-face or remote) at a time that suits you.</p>
                 </div>
 
                 <div class="step-connector">
@@ -243,7 +243,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                         <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
                         <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    <p>Regular check-ups with real people (by zoom or face-to-face at our locations)</p>
+                    <p>Regular check-ups with real people (remote or face-to-face at our locations)</p>
                 </div>
 
                 <div class="difference-item">
@@ -330,9 +330,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                 </div>
                 <div class="included-price-card">
                     <div class="included-price-img">
+                        <img src="images/included/food-shot.webp" alt="Delicious healthy meal" loading="lazy">
+                    </div>
+                    <p class="included-price-text">Personalised meal planning with 500+ delicious recipes</p>
+                </div>
+                <div class="included-price-card">
+                    <div class="included-price-img">
                         <img src="images/included/consultation.webp" alt="Pharmacist consulting with patient" loading="lazy">
                     </div>
-                    <p class="included-price-text">Regular one-to-one consultations by Zoom or face-to-face</p>
+                    <p class="included-price-text">Regular one-to-one consultations remotely or face-to-face</p>
                 </div>
                 <div class="included-price-card">
                     <div class="included-price-img">
@@ -342,15 +348,181 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                 </div>
                 <div class="included-price-card">
                     <div class="included-price-img">
-                        <img src="images/included/food-shot.webp" alt="Delicious healthy meal" loading="lazy">
-                    </div>
-                    <p class="included-price-text">Personalised meal planning with 500+ delicious recipes</p>
-                </div>
-                <div class="included-price-card">
-                    <div class="included-price-img">
                         <img src="images/included/app-screen.webp" alt="Logan Health companion app" loading="lazy">
                     </div>
                     <p class="included-price-text">Companion app to track everything you need on treatment</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Treatments Section -->
+    <section class="section treatments" id="treatments">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Our Treatments</span>
+                <h2 class="section-title">GLP-1 Weight Loss Medications</h2>
+                <p class="section-subtitle">Clinically proven treatments that help you lose weight and keep it off</p>
+            </div>
+
+            <div class="treatments-grid">
+                <div class="treatment-card">
+                    <div class="treatment-badge">Popular Choice</div>
+                    <img src="images/wegovy-pen.webp" alt="Wegovy pen" class="treatment-image">
+                    <div class="treatment-header">
+                        <h3 class="treatment-name">Wegovy</h3>
+                        <p class="treatment-ingredient">Semaglutide</p>
+                    </div>
+                    <div class="treatment-price">
+                        <span class="price-from">From</span>
+                        <span class="price-amount">&pound;89</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <ul class="treatment-benefits">
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Up to 15% average weight loss†</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Weekly self-injection</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Reduces appetite naturally</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>FDA & MHRA approved</span>
+                        </li>
+                    </ul>
+                    <div class="treatment-description">
+                        <p>Wegovy contains semaglutide, which mimics GLP-1 hormone to help you feel fuller for longer and reduce cravings.</p>
+                    </div>
+                    <a href="#questionnaire" class="btn btn-primary btn-block">Check Eligibility</a>
+                    <a href="/wegovy" class="btn btn-outline btn-block" style="margin-top: var(--spacing-3);">Learn more about Wegovy</a>
+                </div>
+
+                <div class="treatment-card featured">
+                    <div class="treatment-badge featured">Most Effective</div>
+                    <img src="images/mounjaro-pen.webp" alt="Mounjaro pen" class="treatment-image">
+                    <div class="treatment-header">
+                        <h3 class="treatment-name">Mounjaro</h3>
+                        <p class="treatment-ingredient">Tirzepatide</p>
+                    </div>
+                    <div class="treatment-price">
+                        <span class="price-from">From</span>
+                        <span class="price-amount">&pound;169.99</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <ul class="treatment-benefits">
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Up to 21% average weight loss*</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Weekly self-injection</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Dual hormone action (GLP-1 + GIP)</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Improved blood sugar control</span>
+                        </li>
+                    </ul>
+                    <div class="treatment-description">
+                        <p>Mounjaro is the latest breakthrough, using tirzepatide to target both GLP-1 and GIP hormones for enhanced weight loss results.</p>
+                    </div>
+                    <a href="#questionnaire" class="btn btn-secondary btn-block">Check Eligibility</a>
+                    <a href="/mounjaro" class="btn btn-outline btn-block" style="margin-top: var(--spacing-3);">Learn more about Mounjaro</a>
+                </div>
+            </div>
+
+            <div class="treatment-footnotes">
+                <p>*Jastreboff AM, et al. <em>Tirzepatide Once Weekly for the Treatment of Obesity.</em> N Engl J Med. 2022;387(3):205-216.</p>
+                <p>†Wilding JPH, et al. <em>Once-Weekly Semaglutide in Adults with Overweight or Obesity.</em> N Engl J Med. 2021;384(11):989-1002.</p>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="comparison-table-wrapper">
+                <h3 class="comparison-title">Wegovy vs Mounjaro: Quick Comparison</h3>
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Wegovy</th>
+                                <th>Mounjaro</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Active Ingredient</td>
+                                <td>Semaglutide</td>
+                                <td>Tirzepatide</td>
+                            </tr>
+                            <tr>
+                                <td>Mechanism</td>
+                                <td>GLP-1 only</td>
+                                <td>GLP-1 + GIP (dual action)</td>
+                            </tr>
+                            <tr>
+                                <td>Average Weight Loss</td>
+                                <td>~15%</td>
+                                <td class="highlight">~21%</td>
+                            </tr>
+                            <tr>
+                                <td>Frequency</td>
+                                <td>Weekly injection</td>
+                                <td>Weekly injection</td>
+                            </tr>
+                            <tr>
+                                <td>Starting Price</td>
+                                <td class="highlight">&pound;89/month</td>
+                                <td>&pound;169.99/month</td>
+                            </tr>
+                            <tr>
+                                <td>Best For</td>
+                                <td>First-time users</td>
+                                <td>Maximum results</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="treatments-info">
+                <div class="info-card">
+                    <div class="info-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 8V12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="12" cy="16" r="1" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <div class="info-content">
+                        <h4>Not sure which is right for you?</h4>
+                        <p>Our pharmacists will help you choose the best treatment based on your health profile, goals, and medical history during your consultation.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -591,178 +763,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                     <div class="google-attribution">
                         <svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
                         Posted on Google
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Treatments Section -->
-    <section class="section treatments" id="treatments">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Our Treatments</span>
-                <h2 class="section-title">GLP-1 Weight Loss Medications</h2>
-                <p class="section-subtitle">Clinically proven treatments that help you lose weight and keep it off</p>
-            </div>
-
-            <div class="treatments-grid">
-                <div class="treatment-card">
-                    <div class="treatment-badge">Popular Choice</div>
-                    <img src="images/wegovy-pen.webp" alt="Wegovy pen" class="treatment-image">
-                    <div class="treatment-header">
-                        <h3 class="treatment-name">Wegovy</h3>
-                        <p class="treatment-ingredient">Semaglutide</p>
-                    </div>
-                    <div class="treatment-price">
-                        <span class="price-from">From</span>
-                        <span class="price-amount">&pound;149</span>
-                        <span class="price-period">/month</span>
-                    </div>
-                    <ul class="treatment-benefits">
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span>Up to 15% average weight loss†</span>
-                        </li>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span>Weekly self-injection</span>
-                        </li>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span>Reduces appetite naturally</span>
-                        </li>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span>FDA & MHRA approved</span>
-                        </li>
-                    </ul>
-                    <div class="treatment-description">
-                        <p>Wegovy contains semaglutide, which mimics GLP-1 hormone to help you feel fuller for longer and reduce cravings.</p>
-                    </div>
-                    <a href="#questionnaire" class="btn btn-primary btn-block">Check Eligibility</a>
-                    <a href="/wegovy" class="btn btn-outline btn-block" style="margin-top: var(--spacing-3);">Learn more about Wegovy</a>
-                </div>
-
-                <div class="treatment-card featured">
-                    <div class="treatment-badge featured">Most Effective</div>
-                    <img src="images/mounjaro-pen.webp" alt="Mounjaro pen" class="treatment-image">
-                    <div class="treatment-header">
-                        <h3 class="treatment-name">Mounjaro</h3>
-                        <p class="treatment-ingredient">Tirzepatide</p>
-                    </div>
-                    <div class="treatment-price">
-                        <span class="price-from">From</span>
-                        <span class="price-amount">&pound;199</span>
-                        <span class="price-period">/month</span>
-                    </div>
-                    <ul class="treatment-benefits">
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span>Up to 21% average weight loss*</span>
-                        </li>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span>Weekly self-injection</span>
-                        </li>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span>Dual hormone action (GLP-1 + GIP)</span>
-                        </li>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span>Improved blood sugar control</span>
-                        </li>
-                    </ul>
-                    <div class="treatment-description">
-                        <p>Mounjaro is the latest breakthrough, using tirzepatide to target both GLP-1 and GIP hormones for enhanced weight loss results.</p>
-                    </div>
-                    <a href="#questionnaire" class="btn btn-secondary btn-block">Check Eligibility</a>
-                    <a href="/mounjaro" class="btn btn-outline btn-block" style="margin-top: var(--spacing-3);">Learn more about Mounjaro</a>
-                </div>
-            </div>
-
-            <div class="treatment-footnotes">
-                <p>*Jastreboff AM, et al. <em>Tirzepatide Once Weekly for the Treatment of Obesity.</em> N Engl J Med. 2022;387(3):205-216.</p>
-                <p>†Wilding JPH, et al. <em>Once-Weekly Semaglutide in Adults with Overweight or Obesity.</em> N Engl J Med. 2021;384(11):989-1002.</p>
-            </div>
-
-            <!-- Comparison Table -->
-            <div class="comparison-table-wrapper">
-                <h3 class="comparison-title">Wegovy vs Mounjaro: Quick Comparison</h3>
-                <div class="comparison-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Feature</th>
-                                <th>Wegovy</th>
-                                <th>Mounjaro</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Active Ingredient</td>
-                                <td>Semaglutide</td>
-                                <td>Tirzepatide</td>
-                            </tr>
-                            <tr>
-                                <td>Mechanism</td>
-                                <td>GLP-1 only</td>
-                                <td>GLP-1 + GIP (dual action)</td>
-                            </tr>
-                            <tr>
-                                <td>Average Weight Loss</td>
-                                <td>~15%</td>
-                                <td class="highlight">~21%</td>
-                            </tr>
-                            <tr>
-                                <td>Frequency</td>
-                                <td>Weekly injection</td>
-                                <td>Weekly injection</td>
-                            </tr>
-                            <tr>
-                                <td>Starting Price</td>
-                                <td class="highlight">&pound;149/month</td>
-                                <td>&pound;199/month</td>
-                            </tr>
-                            <tr>
-                                <td>Best For</td>
-                                <td>First-time users</td>
-                                <td>Maximum results</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="treatments-info">
-                <div class="info-card">
-                    <div class="info-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                            <path d="M12 8V12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            <circle cx="12" cy="16" r="1" fill="currentColor"/>
-                        </svg>
-                    </div>
-                    <div class="info-content">
-                        <h4>Not sure which is right for you?</h4>
-                        <p>Our pharmacists will help you choose the best treatment based on your health profile, goals, and medical history during your consultation.</p>
                     </div>
                 </div>
             </div>
@@ -1047,7 +1047,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                 <div class="about-content">
                     <span class="section-tag">About Us</span>
                     <h2 class="section-title">Your Trusted Local Pharmacy</h2>
-                    <p>Logan Health has been serving the South East London community for decades. Our team of experienced pharmacists are dedicated to providing personalised care and expert advice.</p>
+                    <p>Logan Health has been serving the South East London community for 59 years. Our team of experienced pharmacists are dedicated to providing personalised care and expert advice.</p>
                     <p>We're now proud to offer GLP-1 weight loss treatments, bringing the latest clinically proven solutions to help you achieve your health goals with professional support every step of the way.</p>
 
                     <div class="about-features">
@@ -1916,9 +1916,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                                     <li>A qualified clinician will review your consultation and determine whether a weight loss treatment plan is in your best interest and safe for you. Your clinician will consider your treatment preference along with their advice in your consultation.</li>
                                     <li>Some medications such as Wegovy and Mounjaro require sub-cutaneous injection in the abdomen, thigh or upper arm.</li>
                                     <li>Our treatment plans include medications that may cause side-effects such as nausea, diarrhoea, headaches, lack of appetite, bloating, constipation, and abdominal pain. I will contact Logan Health and inform my GP if I experience any side effects from treatment, begin any new medication, or if my medical conditions change during the course of treatment.</li>
-                                    <li>I agree to Logan Health notifying my GP that I am taking GLP-1 weight loss medication and to allow my GP to share information with MedExpress if they have any concerns.</li>
+                                    <li>I agree to Logan Health notifying my GP that I am taking GLP-1 weight loss medication and to allow my GP to share information with Logan Health if they have any concerns.</li>
                                     <li>I give my permission for Logan Health to request further medical information from my GP if necessary.</li>
-                                    <li>You are required to read the "Patient Information Booklet" included with your medication.</li>
+                                    <li>You are required to read the "Patient Information Leaflet" included with your medication.</li>
                                     <li>As part of your consultation, and to ensure regulatory compliance, patient safety our team will need to verify your BMI. This step is mandatory to verify your identity, confirm your eligibility, and prevent fraudulent orders.</li>
                                     <li>If prescribed weight-loss treatment, you will need to complete a monthly follow-up consultation (online or face-to-face) on the final week of your current month's supply.</li>
                                     <li>Your delivery address is suitable for receiving medications without children, elderly people or animals having access to them.</li>
@@ -2124,7 +2124,41 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                         </svg>
                     </button>
                     <div class="faq-answer">
-                        <p>Prices start from &pound;149/month for Wegovy and &pound;199/month for Mounjaro. This includes your medication, pharmacist consultations, and ongoing support. Payment is taken monthly. We accept all major credit and debit cards. Full pricing details will be discussed during your consultation.</p>
+                        <p>Prices start from &pound;89/month for Wegovy and &pound;169.99/month for Mounjaro. This includes your medication, pharmacist consultations, recipes, meal planner, tracking app and ongoing support. Payment is only taken when your prescription is approved. We accept all major credit and debit cards.</p>
+                        <p>Full pricing details:</p>
+                        <div class="faq-pricing-tables">
+                            <table class="faq-dose-table">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">Wegovy</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>0.25mg</td><td>&pound;89*</td></tr>
+                                    <tr><td>0.5mg</td><td>&pound;124.99</td></tr>
+                                    <tr><td>1.0mg</td><td>&pound;139.99</td></tr>
+                                    <tr><td>1.7mg</td><td>&pound;179.99</td></tr>
+                                    <tr><td>2.4mg</td><td>&pound;219.99</td></tr>
+                                    <tr><td>7.2mg</td><td>&pound;299.99</td></tr>
+                                </tbody>
+                            </table>
+                            <table class="faq-dose-table">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">Mounjaro</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>2.5mg</td><td>&pound;169.99</td></tr>
+                                    <tr><td>5mg</td><td>&pound;194.99</td></tr>
+                                    <tr><td>7.5mg</td><td>&pound;249.99</td></tr>
+                                    <tr><td>10mg</td><td>&pound;279.99</td></tr>
+                                    <tr><td>12.5mg</td><td>&pound;299.99</td></tr>
+                                    <tr><td>15mg</td><td>&pound;309.99</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="faq-pricing-note">*First dose, new customers only. Discounts are available for multiple purchases. You can discuss during your consultation.</p>
                     </div>
                 </div>
             </div>

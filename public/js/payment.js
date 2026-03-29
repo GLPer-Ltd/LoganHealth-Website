@@ -12,8 +12,8 @@
     };
 
     var PRODUCT_PRICES = {
-        wegovy: '£149',
-        mounjaro: '£199',
+        wegovy: '£89',
+        mounjaro: '£169.99',
     };
 
     function showError(message) {
